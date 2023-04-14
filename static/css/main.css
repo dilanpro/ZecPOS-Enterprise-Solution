@@ -1,0 +1,7 @@
+section.main > div:has(~ footer ) {
+    padding-bottom: 5px;
+}
+
+footer {
+    display: none;
+}
