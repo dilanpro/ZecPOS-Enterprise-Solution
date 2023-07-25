@@ -1,3 +1,5 @@
-venv
+venv/*
+dist/*
+build/*
 .idea
 *.db

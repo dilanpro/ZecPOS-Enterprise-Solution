@@ -4,12 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-streamlit = "*"
-streamlit-extras = "*"
-streamlit-option-menu = "*"
-sqlalchemy = "*"
+Flask = {extras = [ "async",], version = "*"}
+pywebview = {extras = [ "qt",], version = "*"}
+pygobject = "*"
 
 [dev-packages]
+pytest = "*"
+pyinstaller = "*"
 
 [requires]
 python_version = "3.10"
