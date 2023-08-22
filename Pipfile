@@ -7,6 +7,10 @@ name = "pypi"
 Flask = {extras = [ "async",], version = "*"}
 pywebview = {extras = [ "qt",], version = "*"}
 pygobject = "*"
+htmx-flask = "*"
+flask-login = "*"
+flask-sqlalchemy = "*"
+mysqlclient = "*"
 
 [dev-packages]
 pytest = "*"

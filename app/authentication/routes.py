@@ -2,6 +2,11 @@
 from flask import Blueprint
 from .views import authentication
 
-base: Blueprint = Blueprint(name='authentication', import_name=__name__)
+auth: Blueprint = Blueprint(
+    name='authentication',
+    import_name=__name__,
+    url_prefix="/auth"
+)
 
-base.add_url_rule(rule='/', view_func=authentication.login, methods=['GET'])
+auth.add_url_rule(rule='/login', view_func=authentication.login, methods=['GET', 'POST'])
+auth.add_url_rule(rule='/logout', view_func=authentication.logout, methods=['GET'])
