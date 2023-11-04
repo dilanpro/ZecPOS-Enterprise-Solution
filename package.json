@@ -1,9 +1,0 @@
-{
-  "devDependencies": {
-    "tailwindcss": "^3.3.3"
-  },
-  "scripts": {
-    "build": "npx tailwindcss build input.css -o app/static/css/index.css",
-    "watch": "npx tailwindcss build input.css -o app/static/css/index.css --watch"
-  }
-}
