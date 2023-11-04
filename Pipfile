@@ -5,6 +5,13 @@ name = "pypi"
 
 [packages]
 django = "*"
+slippers = "*"
+django-livereload-server = "*"
+django-ninja = "*"
+django-render-block = "*"
+django-htmx = "*"
+django-extensions = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 
