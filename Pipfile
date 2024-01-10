@@ -4,16 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
-slippers = "*"
-django-livereload-server = "*"
-django-ninja = "*"
-django-render-block = "*"
-django-htmx = "*"
-django-extensions = "*"
-django-widget-tweaks = "*"
+Flask = {extras = [ "async",], version = "*"}
+pywebview = {extras = [ "qt",], version = "*"}
+pygobject = "*"
+htmx-flask = "*"
+flask-login = "*"
+flask-sqlalchemy = "*"
+mysqlclient = "*"
 
 [dev-packages]
+pytest = "*"
+pyinstaller = "*"
 
 [requires]
 python_version = "3.10"
