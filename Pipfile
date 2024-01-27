@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[scripts]
+dev = "python3 manage.py runserver"
+production = "gunicorn core.wsgi -b 0.0.0.0:8000 --workers 4"
+make = "python3 manage.py makemigrations"
+migrate = "python3 manage.py migrate"
+collect = "python3 manage.py collectstatic --noinput"
+
+[packages]
+django = "*"
+slippers = "*"
+django-livereload-server = "*"
+django-ninja = "*"
+django-render-block = "*"
+django-htmx = "*"
+django-extensions = "*"
+django-widget-tweaks = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"

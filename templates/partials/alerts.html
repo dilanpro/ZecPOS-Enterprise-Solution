@@ -1,0 +1,26 @@
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <script>
+                Toastify({
+                    text: "{{ message|safe }}",
+                    duration: 5000,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "#fca5a5"
+                }).showToast();
+            </script>
+        {% else %}
+            <script>
+                Toastify({
+                    text: "{{ message|safe }}",
+                    duration: 5000,
+                    gravity: "top",
+                    position: "center",
+                }).showToast();
+            </script>
+        {% endif %}
+
+    {% endfor %}
+
+{% endif %}
