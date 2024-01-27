@@ -1,6 +1,9 @@
 # Debug Files
 __debug_*
 
+# VS Code File
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
