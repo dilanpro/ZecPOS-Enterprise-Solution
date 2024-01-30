@@ -1,0 +1,9 @@
+{{template "partials/header" .}}
+
+<h1>{{.Title}}</h1>
+
+{{range .Numbers}}
+    {{.}}
+{{end}}
+
+{{template "partials/footer" .}}
