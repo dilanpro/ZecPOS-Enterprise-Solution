@@ -5,6 +5,7 @@ name = "pypi"
 
 [scripts]
 dev = "python3 manage.py runserver"
+reload = "python3 manage.py livereload"
 production = "gunicorn core.wsgi -b 0.0.0.0:8000 --workers 4"
 make = "python3 manage.py makemigrations"
 migrate = "python3 manage.py migrate"
@@ -19,6 +20,7 @@ django-render-block = "*"
 django-htmx = "*"
 django-extensions = "*"
 django-widget-tweaks = "*"
+django-jet-reboot = "*"
 
 [dev-packages]
 

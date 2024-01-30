@@ -1,0 +1,3 @@
+components:
+  # Hero Input Group
+  HeroInputGroup: "components/hero-input-group.html"

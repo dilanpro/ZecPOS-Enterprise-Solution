@@ -13,6 +13,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "jet.dashboard",
+    "jet",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -27,6 +29,7 @@ INSTALLED_APPS = [
     "widget_tweaks",  # Form Tweaks
     "django_extensions",  # Django Extensions
     # Local
+    "apps.user"
 ]
 
 MIDDLEWARE = [
@@ -53,6 +56,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+            ],
+            "builtins": [
+                "slippers.templatetags.slippers",
             ],
         },
     },
@@ -97,6 +103,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+AUTH_USER_MODEL: str = "user.User"
 LOGIN_URL: str = "/auth/login/"
 LOGIN_REDIRECT_URL: str = "/"
 

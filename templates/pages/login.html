@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block base %}
+
+    <div class="h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+        <div
+            class="flex flex-col w-9/12 max-w-[400px] bg-white rounded-xl shadow-xl shadow-slate pt-6"
+        >
+            <div class="flex flex-col gap-3 items-center justify-center h-full">
+                <h2 class="uppercase text-lg pt-3">LOGIN</h2>
+                <form
+                    id="register"
+                    method="post"
+                    action="{% url 'login' %}"
+                    class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
+                >
+                    {% csrf_token %}
+
+                    {% HeroInputGroup field=form.username %}
+                    {% HeroInputGroup field=form.password %}
+
+                    <button class="button text-white bg-primary w-4/5">
+                        Login
+                    </button>
+
+                    <a
+                        href=""
+                        class="text-center text-regular hover:text-regular-high"
+                    >
+                        Don't have an account? Contact US
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
