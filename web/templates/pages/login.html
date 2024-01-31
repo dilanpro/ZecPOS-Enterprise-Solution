@@ -1,0 +1,44 @@
+{{template "base" .}}
+
+{{define "Content"}}
+    <div class="flex items-center justify-center h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+
+        <div
+            class="flex flex-col w-9/12 max-w-[400px] bg-white rounded-xl shadow-xl shadow-slate p-10"
+        >
+            <div class="flex flex-col gap-3 items-center justify-center h-full">
+                <form
+                    id="register"
+                    method="post"
+                    action='/auth/login'
+                    class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
+                >
+                    <h2 class="text-center text-xl uppercase font-bold p-5">Login</h2>
+
+                    <input
+                        name="username" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none" placeholder="Username" required
+                        {{if .Username}}
+                            value="{{.Username}}"
+                        {{end}}
+                    >
+                    <input
+                        name="password" type="password" class="w-full border-2 rounded-lg p-2 focus:outline-none" placeholder="Password" required
+                        {{if .Password}}
+                            value="{{.Password}}"
+                        {{end}}
+                    >
+
+                    <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
+                        Login
+                    </button>
+
+                    <a
+                        class="text-center text-regular hover:text-regular-high"
+                    >
+                        Don't have an account? Contact US
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+{{end}}

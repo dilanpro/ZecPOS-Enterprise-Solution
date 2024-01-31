@@ -7,6 +7,5 @@ import (
 )
 
 func Router(app *fiber.App) {
-	app.Get("", views.IndexView)
-	app.Get("session", views.GetView)
+	app.All("auth" + "/login", views.LoginView)
 }

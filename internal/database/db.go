@@ -25,3 +25,21 @@ func GetDB() *gorm.DB {
 	return DB
 
 }
+
+func Migrate() {
+	db := GetDB()
+	db.AutoMigrate(&User{})
+
+	// Create super admin user
+	var user User
+	db.First(&user, "is_super_admin = ?", true)
+	if user.Username == "" {
+		newSuperAdmin := User{
+			Username: "zecky",
+			Password: "Zec@1995",
+			Name: "ZecPOS Admin",
+			IsSuperAdmin: true,
+		}
+		newSuperAdmin.Create()
+	}
+}

@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"path/filepath"
+	"zecpos/internal/database"
 	"zecpos/internal/middleware"
 	"zecpos/internal/routers"
 
@@ -13,18 +14,31 @@ import (
 
 func main() {
 
+	// Defining Web Directory Path
 	dir, err := os.Getwd()
 	if err != nil {
 		panic("Error getting current directory:" + err.Error())
 	}
-	engine := html.New("web/templates", ".html")
+	webPath := ""
 	if filepath.Base(dir) == "cmd" {
-		engine = html.New("../web/templates", ".html")
+		webPath = "../"
 	}
 
+	// Initiate Template Engine
+	engine := html.New(webPath + "web/templates", ".html")
+
+	// Initial DB Migration
+	database.Migrate()
+
+	// Initiating App
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
+
+	// Loading Statics
+	app.Static("/static", webPath + "web/static")
+
+
 	app.Use(middleware.SessionMiddleware)
 	routers.Router(app)
 

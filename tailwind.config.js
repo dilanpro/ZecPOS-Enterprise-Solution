@@ -7,7 +7,7 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				"background-main": colors.zinc[200],
+				background: colors.zinc[200],
 				"background-dark": colors.zinc[800],
 				"background-dark-h": colors.zinc[900],
 				primary: colors.blue[500],
