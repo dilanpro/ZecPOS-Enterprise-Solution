@@ -11,7 +11,7 @@ import (
 var DB *gorm.DB
 var err error
 
-const DNS = "root:@tcp(127.0.0.1:3306)/godb?charset=utf8mb4&parseTime=True&loc=Local"
+const DNS = "root:@tcp(127.0.0.1:3306)/zecpos?charset=utf8mb4&parseTime=True&loc=Local"
 
 func GetDB() *gorm.DB {
 	if DB == nil {

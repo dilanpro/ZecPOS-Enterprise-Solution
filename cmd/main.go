@@ -1,20 +1,26 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
 	"zecpos/internal/middleware"
 	"zecpos/internal/routers"
 
 	"github.com/gofiber/fiber/v2"
-
 	"github.com/gofiber/template/html/v2"
 )
 
 
 func main() {
 
-	engine := html.New("../web/templates", ".html")
-
-
+	dir, err := os.Getwd()
+	if err != nil {
+		panic("Error getting current directory:" + err.Error())
+	}
+	engine := html.New("web/templates", ".html")
+	if filepath.Base(dir) == "cmd" {
+		engine = html.New("../web/templates", ".html")
+	}
 
 	app := fiber.New(fiber.Config{
 		Views: engine,
@@ -22,7 +28,6 @@ func main() {
 	app.Use(middleware.SessionMiddleware)
 	routers.Router(app)
 
-
-	app.Listen(":3000")
+	app.Listen(":8000")
 
 }
