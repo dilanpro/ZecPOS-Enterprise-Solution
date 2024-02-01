@@ -11,6 +11,10 @@ type User struct {
 	Password		string		`json:"password"`
 	Name     		string		`json:"Name"`
 	IsSuperAdmin	bool		`json:"is_super_admin"`
+
+	// Business
+	BusinessID     uint     `json:"business_id"`
+    Business       Business `gorm:"foreignKey:BusinessID" json:"business"`
 }
 
 

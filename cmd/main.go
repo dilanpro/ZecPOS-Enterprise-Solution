@@ -8,7 +8,7 @@ import (
 	"zecpos/internal/routers"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/template/html/v2"
+	"github.com/gofiber/template/django/v3"
 )
 
 
@@ -25,7 +25,7 @@ func main() {
 	}
 
 	// Initiate Template Engine
-	engine := html.New(webPath + "web/templates", ".html")
+	engine := django.New(webPath + "web/templates", ".django")
 
 	// Initial DB Migration
 	database.Migrate()

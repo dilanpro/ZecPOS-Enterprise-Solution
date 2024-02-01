@@ -8,6 +8,10 @@ import (
 )
 
 
+func LoggedUser(c *fiber.Ctx) (database.User) {
+	return c.Locals("user").(database.User)
+}
+
 func AuthorizeRequest(c *fiber.Ctx) (database.User, error) {
 	username := session.GetSession(c, "username")
 	if username == "" {

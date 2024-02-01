@@ -29,6 +29,7 @@ func GetDB() *gorm.DB {
 func Migrate() {
 	db := GetDB()
 	db.AutoMigrate(&User{})
+	db.AutoMigrate(&Business{})
 
 	// Create super admin user
 	var user User

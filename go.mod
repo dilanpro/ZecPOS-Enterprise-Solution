@@ -11,12 +11,13 @@ require (
 	github.com/cli/safeexec v1.0.1 // indirect
 	github.com/creack/pty v1.1.21 // indirect
 	github.com/fatih/color v1.16.0 // indirect
+	github.com/flosch/pongo2/v6 v6.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/gofiber/fiber/v2 v2.52.0 // indirect
 	github.com/gofiber/storage/mysql/v2 v2.0.0-20240130044545-a4ca8cde2603 // indirect
 	github.com/gofiber/template v1.8.2 // indirect
-	github.com/gofiber/template/html/v2 v2.1.0 // indirect
+	github.com/gofiber/template/django/v3 v3.1.9 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect
 	github.com/gohugoio/hugo v0.122.0 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect

@@ -15,7 +15,6 @@ func SessionMiddleware(c *fiber.Ctx) error {
 		var user database.User
 		var err error
 
-		println(path, strings.HasPrefix(path, "/sa"))
 		if strings.HasPrefix(path, "/sa") {
 			user, err = authentication.SuperAdminAuthorizeRequest(c)
 			if err != nil {

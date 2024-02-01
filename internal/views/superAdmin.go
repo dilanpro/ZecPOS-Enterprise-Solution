@@ -1,8 +1,6 @@
 package views
 
 import (
-	"fmt"
-	"strconv"
 	"zecpos/internal/database"
 
 	"github.com/gofiber/fiber/v2"
@@ -10,7 +8,8 @@ import (
 
 func SuperAdminView(c *fiber.Ctx) error {
 	user := c.Locals("user").(database.User)
-	fmt.Println(user)
 
-	return c.SendString("Super Admin: " + strconv.FormatBool(user.HasSuperAdminPermission()))
+	return c.Render("pages/super-admin-dashboard", fiber.Map{
+		"user": user,
+	})
 }
