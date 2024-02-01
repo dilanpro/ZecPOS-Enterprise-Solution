@@ -7,8 +7,12 @@ import (
 )
 
 func SessionMiddleware(c *fiber.Ctx) error {
+
+	// All endpoints other than auth/login are protected
 	username := session.GetSession(c, "username")
-	c.Locals("username", username)
+	if c.Path() != "/auth/login" && username == "" {
+		return c.Redirect("/auth/login")
+	}
 
 	return c.Next()
 }

@@ -7,12 +7,25 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+
+func AuthorizeRequest(c *fiber.Ctx) database.User {
+	username := session.GetSession(c, "username")
+	if username == "" {
+		panic("User authorization failed")
+	}
+
+	DB := database.GetDB()
+	var user database.User
+	DB.First(&user, "username = ?", username)
+
+	return user
+}
+
+
 func LoginView(c *fiber.Ctx) error {
 
 	switch c.Method() {
 	case fiber.MethodGet:
-		println("IndexView", c.Locals("username").(string))
-		session.SetSession(c, "username", "madhavi")
 		return c.Render("pages/login", fiber.Map{})
 
 	case fiber.MethodPost:
@@ -41,6 +54,9 @@ func LoginView(c *fiber.Ctx) error {
 			})
 		}
 
+		// Set Session
+		session.SetSession(c, "username", user.Username)
+
 		return c.Redirect("/")  // TODO: Implement the Route for this
 
 	default:
@@ -48,7 +64,7 @@ func LoginView(c *fiber.Ctx) error {
 	}
 }
 
-func GetView(c *fiber.Ctx) error {
-	println("GetView", c.Locals("username").(string))
-	return c.SendString("Hello")
+func LogoutView(c *fiber.Ctx) error {
+	session.FlushSession(c)
+	return c.Redirect("/auth/login")
 }
