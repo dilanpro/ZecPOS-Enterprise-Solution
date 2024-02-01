@@ -1,17 +1,34 @@
 package middleware
 
 import (
-	"zecpos/internal/session"
+	"strings"
+	"zecpos/internal/authentication"
+	"zecpos/internal/database"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func SessionMiddleware(c *fiber.Ctx) error {
+	path := c.Path()
 
-	// All endpoints other than auth/login are protected
-	username := session.GetSession(c, "username")
-	if c.Path() != "/auth/login" && username == "" {
-		return c.Redirect("/auth/login")
+	if path != "/auth/login" {
+		var user database.User
+		var err error
+
+		println(path, strings.HasPrefix(path, "/sa"))
+		if strings.HasPrefix(path, "/sa") {
+			user, err = authentication.SuperAdminAuthorizeRequest(c)
+			if err != nil {
+				return c.SendStatus(fiber.StatusUnauthorized)
+			}
+		} else {
+			user, err = authentication.AuthorizeRequest(c)
+			if err != nil {
+				return c.Redirect("/auth/login")
+			}
+		}
+
+		c.Locals("user", user)
 	}
 
 	return c.Next()

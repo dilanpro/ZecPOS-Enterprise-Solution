@@ -1,8 +1,9 @@
 package database
 
 import (
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
-	"golang.org/x/crypto/bcrypt")
+)
 
 type User struct {
 	gorm.Model
@@ -28,4 +29,8 @@ func (u *User) Create() {
 func (u *User) CheckPassword(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
 	return err == nil
+}
+
+func (u *User) HasSuperAdminPermission() bool {
+	return u.IsSuperAdmin
 }

@@ -8,20 +8,6 @@ import (
 )
 
 
-func AuthorizeRequest(c *fiber.Ctx) database.User {
-	username := session.GetSession(c, "username")
-	if username == "" {
-		panic("User authorization failed")
-	}
-
-	DB := database.GetDB()
-	var user database.User
-	DB.First(&user, "username = ?", username)
-
-	return user
-}
-
-
 func LoginView(c *fiber.Ctx) error {
 
 	switch c.Method() {

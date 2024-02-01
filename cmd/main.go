@@ -42,6 +42,7 @@ func main() {
 	app.Use(middleware.SessionMiddleware)
 	routers.AuthRouter(app)
 	routers.DashboardRouter(app)
+	routers.SuperAdminRouter(app)
 
 	app.Listen(":8000")
 

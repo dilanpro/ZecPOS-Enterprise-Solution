@@ -6,7 +6,6 @@ import (
 
 
 func IndexView(c *fiber.Ctx) error {
-	user := AuthorizeRequest(c)
-
+	user := c.Locals("user")
 	return c.JSON(user)
 }
