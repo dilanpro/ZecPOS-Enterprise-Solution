@@ -14,7 +14,7 @@
 		<title>ZecPOS | The Most Affordable POS Solution</title>
 	</head>
 
-	<body class="min-h-screen">
+	<body class="min-h-screen bg-background">
 		{% include "partials/alerts.django" %}
 		{% block Base %}{% endblock %}
 	</body>

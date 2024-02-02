@@ -1,5 +1,20 @@
-{% extends "layouts/main.django" %}
+{% extends "layouts/super-admin.django" %}
 
 {% block Content %}
-    HI There
+    <div class="flex flex-wrap w-full">
+
+        <!-- Existing Businesses -->
+        {% for Business in Businesses %}
+            <a href="/sa/business/{{Business.ID}}" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
+                <h2 class="text-xl font-bold uppercase">{{Business.Title}}</h2>
+                <p class="uppercase text-sm">{{Business.City}}</p>
+            </a>
+        {% endfor %}
+
+        <!-- Add Business -->
+        <a href="/sa/business/new" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
+            <img class="w-12 m-3" src="/static/img/plus-black.svg" alt="">
+            <h2 class="text-xl font-bold uppercase">Add Business</h2>
+        </a>
+    </div>
 {% endblock %}

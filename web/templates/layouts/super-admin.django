@@ -1,0 +1,27 @@
+{% extends 'base.django' %}
+
+{% block Base %}
+
+    <div class="h-screen">
+        <div class="relative flex items-center justify-center h-screen">
+            <div class="flex h-full w-full">
+                <div class="fixed flex flex-col items-center bg-pink-600 h-full w-20">
+                    <a href="/sa" class="flex flex-col items-center px-2 py-5 text-light w-full">
+                        <img class="w-6" src="/static/img/business.svg" alt="">
+                        <div class="text-sm font-bold">Business</div>
+                    </a>
+
+                    <div class="flex-grow"></div>
+                    <div class="flex flex-col items-center px-2 py-5 text-light w-full">
+                        <img class="w-6" src="/static/img/user.svg" alt="">
+                        <div class="text-sm font-bold">Profile</div>
+                    </div>
+                </div>
+                <div class="w-full ms-20">
+                    {% block Content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

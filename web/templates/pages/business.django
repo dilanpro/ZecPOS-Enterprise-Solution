@@ -1,0 +1,171 @@
+{% extends "layouts/super-admin.django" %}
+
+{% block Content %}
+    <div class="flex justify-center w-full">
+        <div class="flex justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px]">
+            <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
+                <form
+                    method="post"
+                    class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
+                >
+                    <h2 class="text-center text-xl uppercase font-bold p-5">Meta Data</h2>
+
+                    <!-- Title -->
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-slate-hilighted">
+                            Business Name
+                        </label>
+                        <input
+                            name="title" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            {% if Business.Title %}
+                                value="{{Business.Title}}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <!-- Account Count -->
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-slate-hilighted">
+                            Account Count
+                        </label>
+                        <input
+                            name="account-count" type="number" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            {% if Business.AccountsCount %}
+                                value="{{Business.AccountsCount}}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <!-- Renewal Date -->
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-slate-hilighted">
+                            Renewal Date
+                        </label>
+                        <input
+                            name="renewal-date" type="date" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            {% if Business.RenewalDate %}
+                                value="{{Business.RenewalDate}}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <h2 class="text-center text-xl uppercase font-bold p-5">Owner</h2>
+
+                    <!-- Owner Name -->
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-slate-hilighted">
+                            Owner Name
+                        </label>
+                        <input
+                            name="owner-name" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            {% if Business.OwnerName %}
+                                value="{{Business.OwnerName}}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <!-- Owner Contact -->
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-slate-hilighted">
+                            Owner Contact
+                        </label>
+                        <input
+                            name="owner-contact" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            {% if Business.OwnerContact %}
+                                value="{{Business.OwnerContact}}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <h2 class="text-center text-xl uppercase font-bold p-5">Contact Person</h2>
+
+                    <!-- Contact Person Name -->
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-slate-hilighted">
+                            Contact Person Name
+                        </label>
+                        <input
+                            name="contact-person-name" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            {% if Business.ContactPersonName %}
+                                value="{{Business.ContactPersonName}}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <!-- Contact Person Contact -->
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-slate-hilighted">
+                            Contact Person Contact
+                        </label>
+                        <input
+                            name="contact-person-contact" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            {% if Business.ContactPersonContact %}
+                                value="{{Business.ContactPersonContact}}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <h2 class="text-center text-xl uppercase font-bold p-5">Location</h2>
+
+                    <!-- Address Line 01 -->
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-slate-hilighted">
+                            Address Line 01
+                        </label>
+                        <input
+                            name="address-line-1" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            {% if Business.AddressLine1 %}
+                                value="{{Business.AddressLine1}}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <!-- Address Line 02 -->
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-slate-hilighted">
+                            Address Line 02
+                        </label>
+                        <input
+                            name="address-line-2" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            {% if Business.AddressLine2 %}
+                                value="{{Business.AddressLine2}}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <!-- City -->
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-slate-hilighted">
+                            City
+                        </label>
+                        <input
+                            name="city" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            {% if Business.City %}
+                                value="{{Business.City}}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <!-- Province -->
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-slate-hilighted">
+                            Province
+                        </label>
+                        <input
+                            name="province" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            {% if Business.Province %}
+                                value="{{Business.Province}}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
+                            Login
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

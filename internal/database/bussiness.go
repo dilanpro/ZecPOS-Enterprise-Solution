@@ -21,10 +21,10 @@ type Business struct {
 	ContactPersonContact	string	`json:"contact_person_contact"`
 
 	// Address
-	AddressLine1	bool	`json:"address_line1"`
-	AddressLine2	bool	`json:"address_line2"`
-	City			bool	`json:"city"`
-	Province		bool	`json:"province"`
+	AddressLine1	string	`json:"address_line1"`
+	AddressLine2	string	`json:"address_line2"`
+	City			string	`json:"city"`
+	Province		string	`json:"province"`
 }
 
 
