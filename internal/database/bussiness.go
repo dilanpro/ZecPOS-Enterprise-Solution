@@ -26,9 +26,3 @@ type Business struct {
 	City			string	`json:"city"`
 	Province		string	`json:"province"`
 }
-
-
-func (b *Business) Create() {
-	db := GetDB()
-	db.Create(b)
-}

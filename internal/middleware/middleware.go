@@ -11,7 +11,9 @@ import (
 func SessionMiddleware(c *fiber.Ctx) error {
 	path := c.Path()
 
-	if path != "/auth/login" {
+	if strings.HasPrefix(path, "/auth") {
+		return c.Next()
+	} else {
 		var user database.User
 		var err error
 
@@ -25,10 +27,12 @@ func SessionMiddleware(c *fiber.Ctx) error {
 			if err != nil {
 				return c.Redirect("/auth/login")
 			}
+			if user.HasSuperAdminPermission() {
+				return c.Redirect("/sa")
+			}
 		}
 
 		c.Locals("user", user)
+		return c.Next()
 	}
-
-	return c.Next()
 }

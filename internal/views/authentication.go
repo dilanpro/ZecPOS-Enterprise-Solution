@@ -43,7 +43,10 @@ func LoginView(c *fiber.Ctx) error {
 		// Set Session
 		session.SetSession(c, "username", user.Username)
 
-		return c.Redirect("/")  // TODO: Implement the Route for this
+		if user.HasSuperAdminPermission() {
+			return c.Redirect("/sa")
+		}
+		return c.Redirect("/")
 
 	default:
 		return c.Status(fiber.StatusMethodNotAllowed).SendString("Method Not Allowed")

@@ -70,7 +70,6 @@ func BusinessView(c *fiber.Ctx) error {
 
 		return c.Redirect(fmt.Sprintf("/sa/business/%d", business.ID))
 
-
 	default:
 		return c.Status(fiber.StatusMethodNotAllowed).SendString("Method Not Allowed")
 	}
