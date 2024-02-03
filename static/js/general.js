@@ -1,29 +1,3 @@
-// Copy to Clipboard
-const copyTextToClipboard = (text) => {
-	console.log("IN");
-	if (navigator.clipboard) {
-		navigator.clipboard
-			.writeText(text)
-			.then(() => {
-				Toastify({
-					text: "Post link copied to clipboard!",
-					duration: 5000,
-					gravity: "top",
-					position: "center",
-				}).showToast();
-			})
-			.catch((err) => {
-				Toastify({
-					text: "Something went wrong! Please try again.",
-					duration: 5000,
-					gravity: "top",
-					position: "center",
-					backgroundColor: "#fca5a5",
-				}).showToast();
-			});
-	}
-};
-
 // Red borders and small text errors instead of default error messages
 $("input, textarea").on("invalid", (event) => {
 	event.preventDefault();
@@ -52,7 +26,7 @@ $("input, textarea").on("keyup focusout invalid", (event) => {
 			const errorDiv = document.createElement("div");
 			errorDiv.id = errorDivId;
 
-			errorDiv.classList.add("text-error", "text-sm", "pt-1");
+			errorDiv.classList.add("text-red-400", "text-sm", "pt-1", "px-1");
 			if (targetElement.type === "file") {
 				errorDiv.classList.add("text-center");
 			}

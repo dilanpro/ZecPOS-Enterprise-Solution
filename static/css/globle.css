@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-	.input {
-		@apply border-2 rounded-lg p-2 focus:outline-none disabled:bg-background-main read-only:bg-background-main;
-	}
-	.button {
-		@apply px-3 py-2 rounded-lg text-center;
-	}
-}
-
 /* Select 2 Styles */
 .select2-container {
 	/* The container where the selectbox is housing*/

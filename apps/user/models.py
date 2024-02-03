@@ -6,8 +6,9 @@ from django.db import models
 class Business(models.Model):
     title = models.CharField(max_length=255)
     status = models.BooleanField(default=True)
-    onboading_date = models.DateTimeField(auto_now_add=True)
-    renewal_date = models.DateField(null=True, blank=True)
+    onboarding_date = models.DateTimeField(auto_now_add=True)
+    renewal_date = models.DateField()
+    seat_count = models.IntegerField(default=1)
 
     # Contact Info
     contact_name = models.CharField(max_length=255)
@@ -27,6 +28,15 @@ class Business(models.Model):
 
 
 class User(AbstractUser):
+
+    ROLES = (
+        ('AD', 'Admin'),
+        ('MN', 'Manager'),
+        ('CS', 'Cashier'),
+        ('SK', 'Stock Keeper'),
+    )
+
+
     # Credentials
     username = models.CharField(
         max_length=255, unique=True, validators=[MinLengthValidator(6)]
@@ -36,6 +46,7 @@ class User(AbstractUser):
     # User Info
     name = models.CharField(max_length=255)
     business = models.ForeignKey(Business, on_delete=models.CASCADE, null=True)
+    role = models.CharField(max_length=2, choices=ROLES, default='CS')
 
     def __str__(self):
         return self.username
