@@ -35,6 +35,7 @@ func BusinessView(c *fiber.Ctx) error {
 		return c.Render("pages/business", fiber.Map{
 			"User": user,
 			"Business": business,
+			"BusinessId": businessId,
 		})
 	case fiber.MethodPost:
 

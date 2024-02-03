@@ -1,7 +1,26 @@
 {% extends "layouts/super-admin.django" %}
 
 {% block Content %}
-    <div class="flex justify-center w-full">
+    <div class="flex flex-col items-center w-full">
+
+        {% if BusinessId != "new" %}
+            <div class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px]">
+                <h2 class="text-center text-xl uppercase font-bold p-5">Quick Actions</h2>
+
+                <div class="flex justify-center">
+                    <a href="/sa/users" class="flex flex-col items-center justify-center w-2/5 h-[100px] bg-light m-5 rounded-xl border-2 border-dashed">
+                        <img class="w-8 m-3" src="/static/img/list-black.svg" alt="">
+                        <h2 class="text-xl font-bold uppercase">List Users</h2>
+                    </a>
+
+                    <a href="/sa/users/new" class="flex flex-col items-center justify-center w-2/5 h-[100px] bg-light m-5 rounded-xl border-2 border-dashed">
+                        <img class="w-8 m-3" src="/static/img/plus-black.svg" alt="">
+                        <h2 class="text-xl font-bold uppercase">Add Users</h2>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="flex justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px]">
             <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
                 <form
@@ -16,7 +35,7 @@
                             Business Name
                         </label>
                         <input
-                            name="title" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            name="title" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none" required
                             {% if Business.Title %}
                                 value="{{Business.Title}}"
                             {% endif %}
@@ -29,7 +48,7 @@
                             Account Count
                         </label>
                         <input
-                            name="account-count" type="number" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            name="account-count" type="number" class="w-full border-2 rounded-lg p-2 focus:outline-none" required
                             {% if Business.AccountsCount %}
                                 value="{{Business.AccountsCount}}"
                             {% endif %}
@@ -42,7 +61,7 @@
                             Renewal Date
                         </label>
                         <input
-                            name="renewal-date" type="date" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            name="renewal-date" type="date" class="w-full border-2 rounded-lg p-2 focus:outline-none" required
                             {% if Business.RenewalDate %}
                                 value="{{Business.RenewalDate}}"
                             {% endif %}
@@ -57,7 +76,7 @@
                             Owner Name
                         </label>
                         <input
-                            name="owner-name" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            name="owner-name" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none" required
                             {% if Business.OwnerName %}
                                 value="{{Business.OwnerName}}"
                             {% endif %}
@@ -70,7 +89,7 @@
                             Owner Contact
                         </label>
                         <input
-                            name="owner-contact" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            name="owner-contact" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none" required
                             {% if Business.OwnerContact %}
                                 value="{{Business.OwnerContact}}"
                             {% endif %}
@@ -85,7 +104,7 @@
                             Contact Person Name
                         </label>
                         <input
-                            name="contact-person-name" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            name="contact-person-name" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none" required
                             {% if Business.ContactPersonName %}
                                 value="{{Business.ContactPersonName}}"
                             {% endif %}
@@ -98,7 +117,7 @@
                             Contact Person Contact
                         </label>
                         <input
-                            name="contact-person-contact" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            name="contact-person-contact" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none" required
                             {% if Business.ContactPersonContact %}
                                 value="{{Business.ContactPersonContact}}"
                             {% endif %}
@@ -113,7 +132,7 @@
                             Address Line 01
                         </label>
                         <input
-                            name="address-line-1" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            name="address-line-1" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none" required
                             {% if Business.AddressLine1 %}
                                 value="{{Business.AddressLine1}}"
                             {% endif %}
@@ -126,7 +145,7 @@
                             Address Line 02
                         </label>
                         <input
-                            name="address-line-2" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            name="address-line-2" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none" required
                             {% if Business.AddressLine2 %}
                                 value="{{Business.AddressLine2}}"
                             {% endif %}
@@ -139,7 +158,7 @@
                             City
                         </label>
                         <input
-                            name="city" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            name="city" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none" required
                             {% if Business.City %}
                                 value="{{Business.City}}"
                             {% endif %}
@@ -152,7 +171,7 @@
                             Province
                         </label>
                         <input
-                            name="province" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none"
+                            name="province" type="text" class="w-full border-2 rounded-lg p-2 focus:outline-none" required
                             {% if Business.Province %}
                                 value="{{Business.Province}}"
                             {% endif %}
