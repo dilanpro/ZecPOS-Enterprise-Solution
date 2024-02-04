@@ -86,6 +86,10 @@ class UserEditView(View):
 class UserDeleteView(View):
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id, business=request.user.business)
+        if user == request.user:
+            messages.error(request, "You can't delete yourself")
+            return redirect(reverse("team-users"))
+
         user.delete()
         messages.success(request, "User deleted successfully")
         return redirect(reverse("team-users"))
