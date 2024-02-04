@@ -25,7 +25,9 @@
                         </button>
                     </div>
 
-                    <a href="{% url 'sa-user-delete' selected_user.business_id selected_user.id %}" class="text-error font-bold">Delete User</a>
+                    {% if user != selected_user %}
+                        <a href="{% url 'team-user-delete' selected_user.id %}" class="text-error font-bold">Delete User</a>
+                    {% endif %}
                 </form>
             </div>
         </div>

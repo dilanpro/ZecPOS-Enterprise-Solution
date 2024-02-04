@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "apps.user",
     "apps.super_admin",
     "apps.pos",
+    "apps.team",
 ]
 
 MIDDLEWARE = [

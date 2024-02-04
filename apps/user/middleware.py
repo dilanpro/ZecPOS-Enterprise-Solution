@@ -21,6 +21,21 @@ class Middleware:
 
         # Super Admin has access to /sa only
         elif request.user.is_superuser and not request.path.startswith("/sa"):
-            return redirect(reverse("businesses"))
+            return redirect(reverse("sa-businesses"))
+
+        # Super Admin Dashboard Access
+        elif request.path.startswith("/sa") and not request.user.is_superuser:
+            messages.error(request, "You don't have access")
+            return redirect(request.user.get_default_dashboard_url())
+
+        # Team Access
+        elif request.path.startswith("/team") and not request.user.has_admin_access():
+            messages.error(request, "You don't have access to Teams")
+            return redirect(request.user.get_default_dashboard_url())
+
+        # POS Access
+        elif request.path.startswith("/pos") and not request.user.has_pos_access():
+            messages.error(request, "You don't have access to POS")
+            return redirect(request.user.get_default_dashboard_url())
 
         return self.get_response(request)

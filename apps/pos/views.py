@@ -6,4 +6,4 @@ from django.views import View
 class DashboardView(View):
 
     def get(self, request):
-        return render(request, "pages/pos.html")
+        return render(request, "pages/pos/dashboard.html")

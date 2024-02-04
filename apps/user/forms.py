@@ -6,6 +6,8 @@ from .models import Business, User
 
 
 class BusinessForm(FormFirstErrorTrackingMixin, forms.ModelForm):
+    seat_count = forms.IntegerField(min_value=1, label="Seat Count")
+
     class Meta:
         model = Business
         fields = [

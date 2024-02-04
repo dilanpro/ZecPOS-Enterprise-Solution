@@ -1,4 +1,4 @@
-{% extends "layouts/super-admin.html" %}
+{% extends "layouts/main.html" %}
 {% load widget_tweaks %}
 
 {% block content %}
@@ -13,19 +13,19 @@
                 >
                     {% csrf_token %}
 
-                    <h2 class="text-center text-xl uppercase font-bold p-5">User Edit</h2>
+                    <h2 class="text-center text-xl uppercase font-bold p-5">User Creation</h2>
                     {% FormInputGroup field=form.username %}
                     {% FormInputGroup field=form.password %}
                     {% FormInputGroup field=form.name %}
                     {% FormInputGroup field=form.role %}
 
+
+
                     <div class="flex flex-col px-3 py-1 w-full">
                         <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
-                            Edit User
+                            Create User
                         </button>
                     </div>
-
-                    <a href="{% url 'sa-user-delete' selected_user.business_id selected_user.id %}" class="text-error font-bold">Delete User</a>
                 </form>
             </div>
         </div>

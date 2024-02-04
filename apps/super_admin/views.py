@@ -37,7 +37,7 @@ class BusinessCreateView(View):
             business: Business = form.save()
             messages.success(request, "Business created successfully")
             return redirect(
-                reverse("business-edit", kwargs={"business_id": business.id})
+                reverse("sa-business-edit", kwargs={"business_id": business.id})
             )
 
         else:
@@ -84,10 +84,11 @@ class UsersListView(View):
 
     def get(self, request, business_id) -> HttpResponse:
         users = User.objects.filter(business_id=business_id)
+        business = get_object_or_404(Business, id=business_id)
         return render(
             request,
             template_name=self.template_name,
-            context={"business_id": business_id, "users": users},
+            context={"business": business, "users": users},
         )
 
 
@@ -100,14 +101,19 @@ class UserCreateView(View):
         return render(request, template_name=self.template_name, context={"form": form})
 
     def post(self, request, business_id) -> HttpResponse:
+        business = get_object_or_404(Business, id=business_id)
+        if business.available_license_count() <= 0:
+            messages.error(request, "No available license to add new user")
+            return redirect(reverse("sa-users", kwargs={"business_id": business_id}))
+
         form = self.form(request.POST)
         if form.is_valid():
             user: User = form.save()
             user.password = make_password(user.password)
-            user.business = get_object_or_404(Business, id=business_id)
+            user.business = business
             user.save()
             messages.success(request, "User created successfully")
-            return redirect(reverse("users", kwargs={"business_id": business_id}))
+            return redirect(reverse("sa-users", kwargs={"business_id": business_id}))
 
         else:
             error = form.get_first_error()
@@ -126,7 +132,7 @@ class UserEditView(View):
         return render(
             request,
             template_name=self.template_name,
-            context={"form": form, "user": user},
+            context={"form": form, "selected_user": user},
         )
 
     def post(self, request, business_id, user_id) -> HttpResponse:
@@ -138,7 +144,7 @@ class UserEditView(View):
             user.business = Business.objects.get(id=business_id)
             user.save()
             messages.success(request, "User edited successfully")
-            return redirect(reverse("users", kwargs={"business_id": business_id}))
+            return redirect(reverse("sa-users", kwargs={"business_id": business_id}))
 
         else:
             error = form.get_first_error()
@@ -152,4 +158,4 @@ class UserDeleteView(View):
         user = get_object_or_404(User, id=user_id, business_id=business_id)
         user.delete()
         messages.success(request, "User deleted successfully")
-        return redirect(reverse("users", kwargs={"business_id": business_id}))
+        return redirect(reverse("sa-users", kwargs={"business_id": business_id}))
