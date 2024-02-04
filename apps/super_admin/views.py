@@ -1,13 +1,14 @@
 from typing import List
-from django.shortcuts import redirect, render
+
+from django.contrib import messages
+from django.contrib.auth.hashers import make_password
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
-from django.http import HttpResponse
-from apps.user.forms import BusinessForm, UserCreateForm
-from django.contrib import messages
-from apps.user.models import Business, User
 
-from django.contrib.auth.hashers import make_password
+from apps.user.forms import BusinessForm, UserCreateForm
+from apps.user.models import Business, User
 
 
 class SuperAdminIndexView(View):
@@ -15,9 +16,12 @@ class SuperAdminIndexView(View):
 
     def get(self, request) -> HttpResponse:
         businesses = Business.objects.all()
-        return render(request, template_name=self.template_name, context={
-            "businesses": businesses
-        })
+        return render(
+            request,
+            template_name=self.template_name,
+            context={"businesses": businesses},
+        )
+
 
 class BusinessCreateView(View):
     template_name: str = "pages/super-admin/business-create.html"
@@ -32,7 +36,9 @@ class BusinessCreateView(View):
         if form.is_valid():
             business: Business = form.save()
             messages.success(request, "Business created successfully")
-            return redirect(reverse("business-edit", kwargs={"business_id": business.id}))
+            return redirect(
+                reverse("business-edit", kwargs={"business_id": business.id})
+            )
 
         else:
             error = form.get_first_error()
@@ -46,15 +52,16 @@ class BusinessEditView(View):
     form = BusinessForm
 
     def get(self, request, business_id) -> HttpResponse:
-        business = Business.objects.get(id=business_id)
+        business = get_object_or_404(Business, id=business_id)
         form = self.form(instance=business)
-        return render(request, template_name=self.template_name, context={
-            "business": business,
-            "form": form
-        })
+        return render(
+            request,
+            template_name=self.template_name,
+            context={"business": business, "form": form},
+        )
 
     def post(self, request, business_id) -> HttpResponse:
-        business = Business.objects.get(id=business_id)
+        business = get_object_or_404(Business, id=business_id)
         form = self.form(request.POST, instance=business)
         if form.is_valid():
             business: Business = form.save()
@@ -64,10 +71,11 @@ class BusinessEditView(View):
             error = form.get_first_error()
             messages.error(request, error)
 
-        return render(request, template_name=self.template_name, context={
-            "business": business,
-            "form": form
-        })
+        return render(
+            request,
+            template_name=self.template_name,
+            context={"business": business, "form": form},
+        )
 
 
 class UsersListView(View):
@@ -76,10 +84,11 @@ class UsersListView(View):
 
     def get(self, request, business_id) -> HttpResponse:
         users = User.objects.filter(business_id=business_id)
-        return render(request, template_name=self.template_name, context={
-            "business_id": business_id,
-            "users": users
-        })
+        return render(
+            request,
+            template_name=self.template_name,
+            context={"business_id": business_id, "users": users},
+        )
 
 
 class UserCreateView(View):
@@ -95,7 +104,7 @@ class UserCreateView(View):
         if form.is_valid():
             user: User = form.save()
             user.password = make_password(user.password)
-            user.business = Business.objects.get(id=business_id)
+            user.business = get_object_or_404(Business, id=business_id)
             user.save()
             messages.success(request, "User created successfully")
             return redirect(reverse("users", kwargs={"business_id": business_id}))
@@ -106,17 +115,22 @@ class UserCreateView(View):
 
         return render(request, template_name=self.template_name, context={"form": form})
 
+
 class UserEditView(View):
     template_name: str = "pages/super-admin/user-edit.html"
     form = UserCreateForm
 
     def get(self, request, business_id, user_id) -> HttpResponse:
-        user = User.objects.get(id=user_id, business_id=business_id)
+        user = get_object_or_404(User, id=user_id, business_id=business_id)
         form = self.form(instance=user)
-        return render(request, template_name=self.template_name, context={"form": form})
+        return render(
+            request,
+            template_name=self.template_name,
+            context={"form": form, "user": user},
+        )
 
     def post(self, request, business_id, user_id) -> HttpResponse:
-        user = User.objects.get(id=user_id, business_id=business_id)
+        user = get_object_or_404(User, id=user_id, business_id=business_id)
         form = self.form(request.POST, instance=user)
         if form.is_valid():
             user: User = form.save()
@@ -124,9 +138,18 @@ class UserEditView(View):
             user.business = Business.objects.get(id=business_id)
             user.save()
             messages.success(request, "User edited successfully")
+            return redirect(reverse("users", kwargs={"business_id": business_id}))
 
         else:
             error = form.get_first_error()
             messages.error(request, error)
 
         return render(request, template_name=self.template_name, context={"form": form})
+
+
+class UserDeleteView(View):
+    def get(self, request, business_id, user_id) -> HttpResponse:
+        user = get_object_or_404(User, id=user_id, business_id=business_id)
+        user.delete()
+        messages.success(request, "User deleted successfully")
+        return redirect(reverse("users", kwargs={"business_id": business_id}))

@@ -16,6 +16,7 @@ module.exports = {
 				"secondary-h": colors.slate[700],
 				light: colors.white,
 				dark: colors.black,
+				error: colors.red[400],
 			},
 			fontFamily: {
 				"logo-style": ["Luckiest Guy", "cursive"],

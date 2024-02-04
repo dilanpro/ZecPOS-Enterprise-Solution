@@ -26,7 +26,7 @@ $("input, textarea").on("keyup focusout invalid", (event) => {
 			const errorDiv = document.createElement("div");
 			errorDiv.id = errorDivId;
 
-			errorDiv.classList.add("text-red-400", "text-sm", "pt-1", "px-1");
+			errorDiv.classList.add("text-error", "text-sm", "pt-1", "px-1");
 			if (targetElement.type === "file") {
 				errorDiv.classList.add("text-center");
 			}
