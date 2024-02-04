@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     # Business
-    path("", views.SuperAdminIndexView.as_view(), name="business"),
+    path("", views.SuperAdminIndexView.as_view(), name="businesses"),
     path("business/create", views.BusinessCreateView.as_view(), name="business-create"),
     path(
         "business/<int:business_id>",

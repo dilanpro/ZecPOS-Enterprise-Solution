@@ -17,8 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    # Live Reload Server and Static Files
-    "livereload",
+    "livereload",  # Live Reload Server and Static Files
     "django.contrib.staticfiles",
     # Third Party
     "django_htmx",  # HTMX Helper App
@@ -26,7 +25,9 @@ INSTALLED_APPS = [
     "widget_tweaks",  # Form Tweaks
     "django_extensions",  # Django Extensions
     # Local
-    "apps.user"
+    "apps.user",
+    "apps.super_admin",
+    "apps.pos",
 ]
 
 MIDDLEWARE = [
@@ -110,6 +111,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL: str = "user.User"
 LOGIN_URL: str = "/auth/login/"
-LOGIN_REDIRECT_URL: str = "/"
+LOGIN_REDIRECT_URL: str = "/pos/"
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
