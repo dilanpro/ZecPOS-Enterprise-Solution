@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block base %}
+
+    <div class="">
+
+        <!-- Navbar Section -->
+        {% include "partials/navbar.html" %}
+
+
+        <!-- Data Section -->
+        <div class="w-full">
+            {% block content %}{% endblock %}
+        </div>
+
+    </div>
+
+{% endblock %}

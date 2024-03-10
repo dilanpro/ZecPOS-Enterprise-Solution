@@ -1,14 +1,21 @@
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
 
 from apps.user.forms import UserCreateForm
 from apps.user.models import Business, User
+from core.htmx import BlockObject, Response
 
 
-class TeamIndexView(View):
+class AuthMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.has_admin_access()
+
+
+class TeamIndexView(AuthMixin, View):
     template_name = "pages/team/users.html"
 
     def get(self, request):
@@ -22,19 +29,31 @@ class TeamIndexView(View):
         )
 
 
-class UserCreateView(View):
+class UserCreateView(AuthMixin, View):
     template_name: str = "pages/team/user-create.html"
     form = UserCreateForm
 
+    def _has_available_licenses(self, business: Business):
+        return business.seat_count > business.users.all().count()
+
     def get(self, request):
         form = self.form()
-        return render(request, template_name=self.template_name, context={"form": form})
+        return render(
+            request,
+            template_name=self.template_name,
+            context={
+                "form": form,
+                "licenses": self._has_available_licenses(
+                    business=request.user.business
+                ),
+            },
+        )
 
     def post(self, request):
         business = request.user.business
         if business.available_license_count() <= 0:
             messages.error(request, "No available license to add new user")
-            return redirect(reverse("team-users"))
+            return redirect(reverse("team"))
 
         form = self.form(request.POST)
         if form.is_valid():
@@ -43,7 +62,7 @@ class UserCreateView(View):
             user.business = business
             user.save()
             messages.success(request, "User created successfully")
-            return redirect(reverse("team-users"))
+            return redirect(reverse("team"))
 
         else:
             error = form.get_first_error()
@@ -52,7 +71,7 @@ class UserCreateView(View):
         return render(request, template_name=self.template_name, context={"form": form})
 
 
-class UserEditView(View):
+class UserEditView(AuthMixin, View):
     template_name: str = "pages/team/user-edit.html"
     form = UserCreateForm
 
@@ -74,7 +93,7 @@ class UserEditView(View):
             user.business = request.user.business
             user.save()
             messages.success(request, "User edited successfully")
-            return redirect(reverse("team-users"))
+            return redirect(reverse("team"))
 
         else:
             error = form.get_first_error()
@@ -83,13 +102,34 @@ class UserEditView(View):
         return render(request, template_name=self.template_name, context={"form": form})
 
 
-class UserDeleteView(View):
+class UserDeleteView(AuthMixin, View):
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id, business=request.user.business)
         if user == request.user:
             messages.error(request, "You can't delete yourself")
-            return redirect(reverse("team-users"))
+            return redirect(reverse("team"))
 
         user.delete()
         messages.success(request, "User deleted successfully")
-        return redirect(reverse("team-users"))
+        return redirect(reverse("team"))
+
+
+class UserSearchView(AuthMixin, View):
+    template_name = "pages/team/users.html"
+
+    def post(self, request):
+        query = request.POST["query"]
+        if query:
+            user = User.objects.filter(
+                name__icontains=query, business=request.user.business
+            )
+        else:
+            user = User.objects.filter(business=request.user.business)
+
+        user_partial = BlockObject(
+            template_name=self.template_name,
+            context={"users": user, "business": request.user.business},
+            block_name="users-list-container",
+        )
+
+        return Response(request, htmx_objects=[user_partial])

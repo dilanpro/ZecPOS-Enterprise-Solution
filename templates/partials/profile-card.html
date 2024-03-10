@@ -1,0 +1,44 @@
+{% load static %}
+
+
+<div
+    x-cloak x-show="showProfileCard"
+    @click.outside="showProfileCard = false"
+    x-transition.duration.300ms
+    class="bg-white w-[350px] mt-[75px] rounded-lg z-20 me-3 shadow-xl"
+>
+
+    <div class="py-5 border-b">
+        <h2 class="text-center text-2xl font-bold">{{user.name}}</h2>
+        <h4 class="text-center text-lg font-bold">@{{user.username}}</h4>
+    </div>
+    <div class="flex items-start">
+        <!-- Logout -->
+        <a
+            href="{% url 'logout' %}"
+            class="flex flex-col items-center justify-center w-1/3 py-8 px-4 hover:bg-background-main rounded-lg"
+        >
+            <img class="w-8 h-8 pb-2" src="{% static 'img/logout.svg' %}" alt="">
+            <div class="text-sm text-center">Logout</div>
+        </a>
+
+        <!-- Account Settings -->
+        <a
+            href="{% url 'logout' %}"
+            class="flex flex-col items-center justify-center w-1/3 py-8 px-4 hover:bg-background-main rounded-lg"
+        >
+            <img class="w-8 h-8 pb-2" src="{% static 'img/user.svg' %}" alt="">
+            <div class="text-sm text-center">Account</div>
+        </a>
+
+        <!-- Logout -->
+        <a
+            href="{% url 'logout' %}"
+            class="flex flex-col items-center justify-center w-1/3 py-8 px-4 hover:bg-background-main rounded-lg"
+        >
+            <img class="w-8 h-8 pb-2" src="{% static 'img/logout.svg' %}" alt="">
+            <div class="text-sm text-center">Logout</div>
+        </a>
+    </div>
+
+</div>

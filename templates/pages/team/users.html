@@ -1,22 +1,44 @@
-{% extends "layouts/main.html" %}
+{% extends "layouts/app-layout.html" %}
+{% load static %}
+
 
 {% block content %}
-    <div class="flex flex-wrap w-full">
-
-        <!-- Existing Users -->
-        {% for user in users %}
-            <a href="{% url 'team-users-edit' user.id %}" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
-                <h2 class="text-xl font-bold uppercase">{{user.name}}</h2>
-                <p class="uppercase text-sm">{{user.role}} | {{user.username}}</p>
-            </a>
-        {% endfor %}
-
-        <!-- Add Users -->
-        {% if business.available_license_count %}
-            <a href="{% url 'team-users-create' %}" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
-                <img class="w-12 m-3" src="/static/img/plus-black.svg" alt="">
-                <h2 class="text-xl font-bold uppercase">Add user</h2>
-            </a>
-        {% endif %}
+    <div class="flex justify-center w-full p-3">
+        <div class="flex items-center bg-light rounded-lg w-11/12 max-w-[300px]">
+            <input
+                name="query"
+                hx-trigger="input changed delay:300ms, query"
+                hx-post="{% url 'team-users-search' %}"
+                class="p-3 focus:outline-none focus:border-none w-full"
+                type="text" placeholder="Search..."
+            >
+            <img class="w-6 m-3" src="/static/img/search.svg" alt="">
+        </div>
     </div>
+
+    {% block users-list-container %}
+        <div
+            id="users-list-container"
+            hx-swap-oob="true"
+            class="flex justify-center flex-wrap w-full"
+        >
+
+            <!-- Existing Users -->
+            {% for user in users %}
+                <a href="{% url 'team-users-edit' user.id %}" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
+                    <h2 class="text-xl font-bold uppercase">{{user.name}}</h2>
+                    <p class="uppercase text-sm">{{user.get_role_display}} | {{user.username}}</p>
+                </a>
+            {% endfor %}
+
+            <!-- Add Users -->
+            {% if business.available_license_count %}
+                <a href="{% url 'team-users-create' %}" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
+                    <img class="w-12 m-3" src="/static/img/plus.svg" alt="">
+                    <h2 class="text-xl font-bold uppercase">Add user</h2>
+                </a>
+            {% endif %}
+        </div>
+    {% endblock %}
+
 {% endblock %}

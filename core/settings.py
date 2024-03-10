@@ -27,8 +27,10 @@ INSTALLED_APPS = [
     # Local
     "apps.user",
     "apps.super_admin",
+    "apps.dashboard",
     "apps.pos",
     "apps.team",
+    "apps.inventory",
 ]
 
 MIDDLEWARE = [
@@ -112,6 +114,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL: str = "user.User"
 LOGIN_URL: str = "/auth/login/"
-LOGIN_REDIRECT_URL: str = "/pos/"
+LOGIN_REDIRECT_URL: str = "/"
 
 X_FRAME_OPTIONS = "SAMEORIGIN"

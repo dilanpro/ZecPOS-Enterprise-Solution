@@ -10,13 +10,13 @@
 
             <div class="flex flex-col md:flex-row justify-center">
                 <a href="{% url 'sa-users' business.id  %}" class="flex flex-col items-center justify-center md:w-2/5 h-[100px] bg-light m-5 rounded-xl border-2 border-dashed">
-                    <img class="w-8 m-3" src="/static/img/list-black.svg" alt="">
+                    <img class="w-8 m-3" src="/static/img/list.svg" alt="">
                     <h2 class="text-xl font-bold uppercase">List Users</h2>
                 </a>
 
                 {% if business.available_license_count %}
                     <a href="{% url 'sa-user-create' business.id %}" class="flex flex-col items-center justify-center md:w-2/5 h-[100px] bg-light m-5 rounded-xl border-2 border-dashed">
-                        <img class="w-8 m-3" src="/static/img/plus-black.svg" alt="">
+                        <img class="w-8 m-3" src="/static/img/plus.svg" alt="">
                         <h2 class="text-xl font-bold uppercase">Add Users</h2>
                     </a>
                 {% endif %}

@@ -63,10 +63,3 @@ class User(AbstractUser):
 
     def has_stock_access(self):
         return self.role in ["AD", "MN", "SK"]
-
-    def get_default_dashboard_url(self):
-        if self.role in ["AD", "MN", "CS"]:
-            return reverse("pos")
-        elif self.role in ["SK"]:
-            # TODO: Implement Stock Dashboard
-            return "/stock"  #  reverse("stock")

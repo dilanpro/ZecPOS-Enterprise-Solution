@@ -1,0 +1,99 @@
+{% load static %}
+
+
+<div
+    x-cloak x-show="showSidebar"
+    @click.outside="showSidebar = false"
+    x-transition.duration.300ms
+    class="bg-white w-[350px] h-screen z-50 shadow-xl"
+>
+
+    <div
+        class="flex items-center justify-end p-2 border-b"
+    >
+        <div
+            @click="showSidebar = false"
+            class="flex items-center justify-center rounded-full w-8 h-8 hover:bg-background-main"
+        >
+            <img class="w-4" src="{% static 'img/close-black.svg' %}" alt="">
+        </div>
+    </div>
+
+    <!-- Admin Section -->
+    <div class="p-3 border-b">
+        <h3 class="text-lg text-center font-bold px-4">Admin Apps</h3>
+        <div class="flex flex-wrap items-start">
+
+            <!-- Team Settings -->
+            <a
+                href="{% url 'team' %}"
+                class="flex flex-col items-center justify-center w-1/3 py-8 px-4 hover:bg-background-main rounded-lg"
+            >
+                <img class="w-12 h-12 pb-2" src="{% static 'img/team.svg' %}" alt="">
+                <div class="text-sm text-center">Team Management</div>
+            </a>
+
+            <!-- Advanced Analytics -->
+            <a
+                href=""
+                class="flex flex-col items-center justify-center w-1/3 py-8 px-4 hover:bg-background-main rounded-lg"
+            >
+                <img class="w-12 h-12 pb-2" src="{% static 'img/analytics.svg' %}" alt="">
+                <div class="text-sm text-center">Advance Analytics</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Inventory Section -->
+    <div class="p-3 border-b">
+        <h3 class="text-lg text-center font-bold px-4">Inventory Apps</h3>
+        <div class="flex flex-wrap items-start">
+
+            <!-- Products -->
+            <a
+                href="{% url 'products' %}"
+                class="flex flex-col items-center justify-center w-1/3 py-8 px-4 hover:bg-background-main rounded-lg"
+            >
+                <img class="w-12 h-12 pb-2" src="{% static 'img/product.svg' %}" alt="">
+                <div class="text-sm text-center">Products</div>
+            </a>
+
+            <!-- Categories -->
+            <a
+                href="{% url 'categories' %}"
+                class="flex flex-col items-center justify-center w-1/3 py-8 px-4 hover:bg-background-main rounded-lg"
+            >
+                <img class="w-12 h-12 pb-2" src="{% static 'img/category.svg' %}" alt="">
+                <div class="text-sm text-center">Categories</div>
+            </a>
+
+            <!-- Suppliers -->
+            <a
+                href="{% url 'suppliers' %}"
+                class="flex flex-col items-center justify-center w-1/3 py-8 px-4 hover:bg-background-main rounded-lg"
+            >
+                <img class="w-12 h-12 pb-2" src="{% static 'img/supplier.svg' %}" alt="">
+                <div class="text-sm text-center">Suppliers</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- POS Section -->
+    <div class="p-3 border-b">
+        <h3 class="text-lg text-center font-bold px-4">POS Apps</h3>
+        <div class="flex flex-wrap items-start">
+
+            <!-- POS -->
+            <a
+                href="{% url 'pos' %}"
+                class="flex flex-col items-center justify-center w-1/3 py-8 px-4 hover:bg-background-main rounded-lg"
+            >
+                <img class="w-12 h-12 pb-2" src="{% static 'img/pos.svg' %}" alt="">
+                <div class="text-sm text-center">POS System</div>
+            </a>
+        </div>
+    </div>
+
+
+
+</div>

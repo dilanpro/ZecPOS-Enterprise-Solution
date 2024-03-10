@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+[x-cloak] {
+	display: none !important;
+}
+
 /* Select 2 Styles */
 .select2-container {
 	/* The container where the selectbox is housing*/
