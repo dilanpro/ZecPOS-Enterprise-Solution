@@ -3,25 +3,37 @@
 {% block content %}
     <div class="flex justify-center w-full p-3">
         <div class="flex items-center bg-light rounded-lg w-11/12 max-w-[300px]">
-            <input class="p-3 focus:outline-none focus:border-none w-full" type="text" placeholder="Search...">
+            <input
+                name="query"
+                hx-trigger="input changed delay:300ms, query"
+                hx-post="{% url 'categories-search' %}"
+                class="p-3 focus:outline-none focus:border-none w-full"
+                type="text" placeholder="Search..."
+            >
             <img class="w-6 m-3" src="/static/img/search.svg" alt="">
         </div>
     </div>
 
-    <div class="flex justify-center flex-wrap w-full">
+    {% block categories-list-container %}
+        <div
+            id="categories-list-container"
+            hx-swap-oob="true"
+            class="flex justify-center flex-wrap w-full"
+        >
 
-        <!-- Existing Products -->
-        {% for product in products %}
-            <a href="{% url 'team-users-edit' user.id %}" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
-                <h2 class="text-xl font-bold uppercase">{{user.name}}</h2>
-                <p class="uppercase text-sm">{{user.role}} | {{user.username}}</p>
+            <!-- Existing Categories -->
+            {% for category in categories %}
+                <a href="{% url 'categories-edit' category.id %}" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
+                    <h2 class="text-xl font-bold uppercase">{{category.title}}</h2>
+                    <p class="uppercase text-sm">100</p>
+                </a>
+            {% endfor %}
+
+            <!-- Add Category -->
+            <a href="{% url 'categories-create' %}" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
+                <img class="w-12 m-3" src="/static/img/plus.svg" alt="">
+                <h2 class="text-xl font-bold uppercase">Add Category</h2>
             </a>
-        {% endfor %}
-
-        <!-- Add Products -->
-        <a href="" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
-            <img class="w-12 m-3" src="/static/img/plus.svg" alt="">
-            <h2 class="text-xl font-bold uppercase">Add Category</h2>
-        </a>
-    </div>
+        </div>
+    {% endblock %}
 {% endblock %}

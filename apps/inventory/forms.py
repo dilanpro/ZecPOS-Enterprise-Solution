@@ -2,7 +2,7 @@ from django import forms
 
 from core.forms import FormFirstErrorTrackingMixin
 
-from .models import Category, Product, Supplier, Item
+from .models import Category, Item, Product, Supplier
 
 
 class SupplierForm(FormFirstErrorTrackingMixin, forms.ModelForm):
@@ -19,4 +19,13 @@ class SupplierForm(FormFirstErrorTrackingMixin, forms.ModelForm):
             "address_line_2",
             "city",
             "postal_code",
+        ]
+
+
+class CategoryForm(FormFirstErrorTrackingMixin, forms.ModelForm):
+
+    class Meta:
+        model = Category
+        fields = [
+            "title",
         ]

@@ -12,7 +12,7 @@ from core.htmx import BlockObject, Response
 
 class AuthMixin(UserPassesTestMixin):
     def test_func(self):
-        return self.request.user.has_admin_access()
+        return self.request.user.has_admin_access()  # type: ignore
 
 
 class TeamIndexView(AuthMixin, View):

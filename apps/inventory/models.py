@@ -4,7 +4,7 @@ from apps.user.models import Business, User
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, unique=True)
 
     # Meta Info
     business = models.ForeignKey(
@@ -31,7 +31,7 @@ class Product(models.Model):
 
 
 class Supplier(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     # Contact Info
     contact_name = models.CharField(max_length=255)
