@@ -14,25 +14,25 @@
         </div>
     </div>
 
-    {% block supplier-list-container %}
+    {% block grn-list-container %}
         <div
-            id="supplier-list-container"
+            id="grn-list-container"
             hx-swap-oob="true"
             class="flex flex-col items-center w-full"
         >
 
-            <!-- Existing Suppliers -->
+            <!-- Existing GRNs -->
             {% for supplier in suppliers %}
-                <a href="{% url 'suppliers-action' supplier.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border-2 border-dashed">
+                <a href="{% url 'suppliers-edit' supplier.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border-2 border-dashed">
                     <h2 class="text-xl font-bold uppercase">{{supplier.name}}</h2>
                     <p class="uppercase text-sm">{{supplier.city}}</p>
                 </a>
             {% endfor %}
 
-            <!-- Add Supplier -->
+            <!-- Add GRN -->
             <a href="{% url 'suppliers-create' %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
                 <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
-                <h2 class="text-xl font-bold uppercase">Add Supplier</h2>
+                <h2 class="text-xl font-bold uppercase">Add GRN</h2>
             </a>
         </div>
     {% endblock %}

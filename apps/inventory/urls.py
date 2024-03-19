@@ -5,12 +5,27 @@ from . import views
 urlpatterns = [
     # Product Endpoints
     path("", views.ProductsDashboardView.as_view(), name="products"),
+    path("search", views.ProductSearchView.as_view(), name="products-search"),
+    path("create", views.ProductCreateView.as_view(), name="products-create"),
+    path(
+        "<int:product_id>/action",
+        views.ProductsActionView.as_view(),
+        name="products-action",
+    ),
+    path(
+        "<int:product_id>/edit", views.ProductEditView.as_view(), name="products-edit"
+    ),
     # Category Endpoints
     path("categories", views.CategoriesDashboardView.as_view(), name="categories"),
     path(
         "categories-search",
         views.CategorySearchView.as_view(),
         name="categories-search",
+    ),
+    path(
+        "categories/<int:category_id>/action",
+        views.CategoriesActionView.as_view(),
+        name="categories-action",
     ),
     path(
         "categories/create",
@@ -24,6 +39,11 @@ urlpatterns = [
     ),
     # Supplier Endpoints
     path("suppliers", views.SuppliersDashboardView.as_view(), name="suppliers"),
+    path(
+        "suppliers/<int:supplier_id>/action",
+        views.SuppliersActionView.as_view(),
+        name="suppliers-action",
+    ),
     path(
         "suppliers-search", views.SupplerSearchView.as_view(), name="suppliers-search"
     ),

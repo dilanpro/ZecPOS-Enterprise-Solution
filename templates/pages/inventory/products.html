@@ -3,25 +3,37 @@
 {% block content %}
     <div class="flex justify-center w-full p-3">
         <div class="flex items-center bg-light rounded-lg w-11/12 max-w-[300px]">
-            <input class="p-3 focus:outline-none focus:border-none w-full" type="text" placeholder="Search...">
+            <input
+                name="query"
+                hx-trigger="input changed delay:300ms, query"
+                hx-post="{% url 'products-search' %}"
+                class="p-3 focus:outline-none focus:border-none w-full"
+                type="text" placeholder="Search..."
+            >
             <img class="w-6 m-3" src="/static/img/search.svg" alt="">
         </div>
     </div>
 
-    <div class="flex justify-center flex-wrap w-full">
+    {% block products-list-container %}
+        <div
+            id="product-list-container"
+            hx-swap-oob="true"
+            class="flex flex-col items-center w-full"
+        >
 
-        <!-- Existing Products -->
-        {% for product in products %}
-            <a href="{% url 'team-users-edit' user.id %}" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
-                <h2 class="text-xl font-bold uppercase">{{user.name}}</h2>
-                <p class="uppercase text-sm">{{user.role}} | {{user.username}}</p>
+            <!-- Existing Products -->
+            {% for product in products %}
+                <a href="{% url 'products-action' product.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border-2 border-dashed">
+                    <h2 class="text-xl font-bold uppercase">{{product.title}}</h2>
+                    <p class="uppercase text-sm">{{product.category.title}}</p>
+                </a>
+            {% endfor %}
+
+            <!-- Add Product -->
+            <a href="{% url 'products-create' %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
+                <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
+                <h2 class="text-xl font-bold uppercase">Add Product</h2>
             </a>
-        {% endfor %}
-
-        <!-- Add Products -->
-        <a href="" class="flex flex-col items-center justify-center w-11/12 max-w-[300px] h-[150px] bg-light m-5 rounded-xl border-2 border-dashed">
-            <img class="w-12 m-3" src="/static/img/plus.svg" alt="">
-            <h2 class="text-xl font-bold uppercase">Add Product</h2>
-        </a>
-    </div>
+        </div>
+    {% endblock %}
 {% endblock %}

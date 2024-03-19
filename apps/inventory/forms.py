@@ -29,3 +29,10 @@ class CategoryForm(FormFirstErrorTrackingMixin, forms.ModelForm):
         fields = [
             "title",
         ]
+
+
+class ProductForm(FormFirstErrorTrackingMixin, forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ["title", "category"]

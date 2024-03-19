@@ -29,6 +29,16 @@ class TeamIndexView(AuthMixin, View):
         )
 
 
+class UserActionView(AuthMixin, View):
+    template_name = "pages/team/user-action.html"
+
+    def get(self, request, user_id: int):
+        user = get_object_or_404(User, id=user_id, business=request.user.business)
+        return render(
+            request, template_name=self.template_name, context={"selected_user": user}
+        )
+
+
 class UserCreateView(AuthMixin, View):
     template_name: str = "pages/team/user-create.html"
     form = UserCreateForm
@@ -99,7 +109,11 @@ class UserEditView(AuthMixin, View):
             error = form.get_first_error()
             messages.error(request, error)
 
-        return render(request, template_name=self.template_name, context={"form": form})
+        return render(
+            request,
+            template_name=self.template_name,
+            context={"form": form, "selected_user": user},
+        )
 
 
 class UserDeleteView(AuthMixin, View):

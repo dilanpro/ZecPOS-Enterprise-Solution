@@ -20,30 +20,21 @@
                     {% csrf_token %}
 
                     <h2 class="text-center text-xl uppercase font-bold p-5">Meta Data</h2>
-                    {% FormInputGroup field=form.name %}
-                    {% FormInputGroup field=form.website %}
-
-                    <h2 class="text-center text-xl uppercase font-bold p-5">Contact Info</h2>
-                    {% FormInputGroup field=form.contact_name %}
-                    {% FormInputGroup field=form.contact_email %}
-                    {% FormInputGroup field=form.contact_phone %}
-
-                    <h2 class="text-center text-xl uppercase font-bold p-5">Location Details</h2>
-                    {% FormInputGroup field=form.address_line_1 %}
-                    {% FormInputGroup field=form.address_line_2 %}
-                    {% FormInputGroup field=form.city %}
-                    {% FormInputGroup field=form.postal_code %}
-
-
+                    {% FormInputGroup field=form.title %}
+                    {% FormInputGroup field=form.category %}
 
                     <div class="flex flex-col px-3 py-1 w-full">
                         <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
-                            Create Supplier
+                            Edit Product
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        $('#id_category').select2()
+    </script>
 
 {% endblock %}

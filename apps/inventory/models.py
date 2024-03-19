@@ -14,9 +14,12 @@ class Category(models.Model):
         User, on_delete=models.CASCADE, related_name="categories"
     )
 
+    def __str__(self) -> str:
+        return self.title
+
 
 class Product(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, unique=True)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="products"
     )
@@ -54,11 +57,24 @@ class Supplier(models.Model):
     )
 
 
+class GRN(models.Model):
+    supplier = models.ForeignKey(
+        Supplier, on_delete=models.CASCADE, related_name="grns"
+    )
+
+    # Meta Info
+    business = models.ForeignKey(
+        Business, on_delete=models.CASCADE, related_name="grns"
+    )
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="grns")
+
+
 class Item(models.Model):
     title = models.CharField(max_length=100)
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, null=True, related_name="items"
     )
+    grn = models.ForeignKey(GRN, on_delete=models.CASCADE, related_name="items")
 
     # Price Info
     price = models.FloatField(default=0)
