@@ -55,4 +55,30 @@ urlpatterns = [
         views.SupplierEditView.as_view(),
         name="suppliers-edit",
     ),
+    # GRN Endpoints
+    path(
+        "grn/<int:supplier_id>",
+        views.GRNDashboardView.as_view(),
+        name="grns",
+    ),
+    path(
+        "grn/<int:supplier_id>/search",
+        views.GRNSearchView.as_view(),
+        name="grn-search",
+    ),
+    path(
+        "grn/<int:grn_id>/action",
+        views.GRNActionView.as_view(),
+        name="grn-action",
+    ),
+    path(
+        "grn/create/suppliers/<int:supplier_id>",
+        views.GRNCreateView.as_view(),
+        name="grn-create",
+    ),
+    path(
+        "grn-items/create/grn/<int:grn_id>",
+        views.GRNItemCreateView.as_view(),
+        name="grn-items-create",
+    ),
 ]

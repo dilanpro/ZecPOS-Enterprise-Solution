@@ -32,6 +32,9 @@ class Product(models.Model):
         User, on_delete=models.CASCADE, related_name="products"
     )
 
+    def __str__(self) -> str:
+        return self.title
+
 
 class Supplier(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -58,27 +61,110 @@ class Supplier(models.Model):
 
 
 class GRN(models.Model):
+    title = models.CharField(max_length=100)
+    special_note = models.TextField(null=True, blank=True)
+    date_added = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    @property
+    def raw_total_price(self) -> float:
+        total = sum([item.total_price for item in self.items.all()])  # type: ignore
+        return total
+
+    @property
+    def total_price(self) -> float:
+        total = sum([item.total_price for item in self.items.all()])  # type: ignore
+
+        # Flat Discount
+        total -= self.flat_discount
+
+        # Percentage Discount
+        total -= (self.percentage_discount / 100) * total
+
+        return total
+
+    @property
+    def discount_flat(self) -> float:
+        return self.flat_discount
+
+    @property
+    def discount_percentage(self) -> float:
+        return (self.percentage_discount / 100) * self.raw_total_price
+
+    is_finalized = models.BooleanField(default=False)
+
+    # Discounts
+    flat_discount = models.FloatField(default=0)
+    percentage_discount = models.FloatField(default=0)
+
+    # Meta Info
     supplier = models.ForeignKey(
         Supplier, on_delete=models.CASCADE, related_name="grns"
     )
-
-    # Meta Info
     business = models.ForeignKey(
         Business, on_delete=models.CASCADE, related_name="grns"
     )
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="grns")
 
 
-class Item(models.Model):
-    title = models.CharField(max_length=100)
+class GRNItem(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, null=True, related_name="items"
     )
-    grn = models.ForeignKey(GRN, on_delete=models.CASCADE, related_name="items")
+    grn = models.ForeignKey(
+        GRN, on_delete=models.CASCADE, related_name="items", blank=True, null=True
+    )
+    opening_quantity = models.FloatField(default=0)
+    cost = models.FloatField(default=0)
+
+    @property
+    def raw_total_price(self) -> float:
+        total = self.item_price * self.opening_quantity
+        return total
+
+    @property
+    def flat_discount_on_total(self) -> float:
+        return self.discount_flat_on_total
+
+    @property
+    def flat_discount_on_items(self) -> float:
+        return self.discount_flat_on_single_item * self.opening_quantity
+
+    @property
+    def percentage_discount(self) -> float:
+        return (self.discount_percentage / 100) * self.raw_total_price
+
+    @property
+    def free_items_discount(self) -> float:
+        return self.discount_free_items * self.item_price
+
+    @property
+    def total_price(self) -> float:
+        total = self.item_price * self.opening_quantity
+
+        # Flat Discount on Total
+        total -= self.discount_flat_on_total
+
+        # Flat Discount on Single Item
+        total -= self.discount_flat_on_single_item * self.opening_quantity
+
+        # Percentage Discount
+        total -= (self.discount_percentage / 100) * total
+
+        # Free Items
+        total -= self.discount_free_items * self.item_price
+
+        return total
+
+    is_finalized = models.BooleanField(default=False)
 
     # Price Info
-    price = models.FloatField(default=0)
-    cost = models.FloatField(default=0)
+    item_price = models.FloatField(default=0)
+
+    # Discounts
+    discount_flat_on_total = models.FloatField(default=0)
+    discount_flat_on_single_item = models.FloatField(default=0)
+    discount_percentage = models.FloatField(default=0)
+    discount_free_items = models.FloatField(default=0)
 
     # Stocks
     quantity = models.FloatField(default=0)
@@ -88,3 +174,6 @@ class Item(models.Model):
         Business, on_delete=models.CASCADE, related_name="items"
     )
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="items")
+
+    def calculate_cost(self):
+        self.cost = self.total_price / self.opening_quantity

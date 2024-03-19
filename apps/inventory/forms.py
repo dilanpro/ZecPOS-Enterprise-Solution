@@ -2,7 +2,7 @@ from django import forms
 
 from core.forms import FormFirstErrorTrackingMixin
 
-from .models import Category, Item, Product, Supplier
+from .models import GRN, Category, GRNItem, Product, Supplier
 
 
 class SupplierForm(FormFirstErrorTrackingMixin, forms.ModelForm):
@@ -36,3 +36,26 @@ class ProductForm(FormFirstErrorTrackingMixin, forms.ModelForm):
     class Meta:
         model = Product
         fields = ["title", "category"]
+
+
+class GRNForm(FormFirstErrorTrackingMixin, forms.ModelForm):
+
+    class Meta:
+        model = GRN
+        fields = ["title", "special_note", "flat_discount", "percentage_discount"]
+
+
+class GRNItemsForm(FormFirstErrorTrackingMixin, forms.ModelForm):
+
+    class Meta:
+        model = GRNItem
+        fields = [
+            "product",
+            "opening_quantity",
+            "item_price",
+            "quantity",
+            "discount_flat_on_total",
+            "discount_flat_on_single_item",
+            "discount_percentage",
+            "discount_free_items",
+        ]

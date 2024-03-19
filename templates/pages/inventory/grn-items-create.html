@@ -1,0 +1,48 @@
+{% extends "layouts/app-layout.html" %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+
+    <div class="flex flex-col items-center w-full">
+
+        <div onclick="history.back()" class="hidden fixed left-0 md:flex items-center p-3 cursor-pointer">
+            <img class="w-4 h-4 mx-2" src="{% static 'img/back.svg' %}" alt="">
+            Back
+        </div>
+
+        <div class="flex justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px]">
+            <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
+                <form
+                    method="post"
+                    class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
+                >
+                    {% csrf_token %}
+
+                    <h2 class="text-center text-xl uppercase font-bold p-5">Meta Data</h2>
+                    {% FormInputGroup field=form.product %}
+                    {% FormInputGroup field=form.opening_quantity %}
+                    {% FormInputGroup field=form.item_price %}
+                    {% FormInputGroup field=form.quantity %}
+
+
+                    <h2 class="text-center text-xl uppercase font-bold p-5">Discount Options</h2>
+                    {% FormInputGroup field=form.discount_flat_on_total %}
+                    {% FormInputGroup field=form.discount_flat_on_single_item %}
+                    {% FormInputGroup field=form.discount_percentage %}
+                    {% FormInputGroup field=form.discount_free_items %}
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
+                            Add GRN Item
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#id_product').select2()
+    </script>
+
+{% endblock %}

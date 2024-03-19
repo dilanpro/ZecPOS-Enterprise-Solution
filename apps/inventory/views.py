@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views.generic import View
 
 from core.htmx import BlockObject, Response
 
-from .forms import CategoryForm, ProductForm, SupplierForm
-from .models import Category, Product, Supplier
+from .forms import CategoryForm, GRNForm, GRNItemsForm, ProductForm, SupplierForm
+from .models import GRN, Category, Product, Supplier
 
 
 class AuthMixin(UserPassesTestMixin):
@@ -296,6 +297,111 @@ class SupplierEditView(AuthMixin, View):
             form.save()
             messages.success(request, message="Supplier Edited Successfully")
             return redirect("suppliers")
+        else:
+            messages.error(request, message=form.get_first_error())
+
+        return render(request, self.template_name, {"form": form})
+
+
+class GRNDashboardView(AuthMixin, View):
+    template_name = "pages/inventory/grns.html"
+
+    def get(self, request, supplier_id: int):
+        supplier = get_object_or_404(
+            Supplier, id=supplier_id, business=request.user.business
+        )
+        return render(
+            request,
+            self.template_name,
+            context={"grns": supplier.grns.all(), "supplier": supplier},  # type: ignore
+        )
+
+
+class GRNActionView(AuthMixin, View):
+    template_name = "pages/inventory/grn-action.html"
+
+    def get(self, request, grn_id: int):
+        grn = get_object_or_404(GRN, id=grn_id, business=request.user.business)
+        return render(
+            request,
+            self.template_name,
+            context={"grn": grn},
+        )
+
+
+class GRNSearchView(AuthMixin, View):
+    template_name = "pages/inventory/grns.html"
+
+    def post(self, request, supplier_id: int):
+        query = request.POST["query"]
+        supplier = get_object_or_404(
+            Supplier, id=supplier_id, business=request.user.business
+        )
+        if query:
+            grns = supplier.grns.all().filter(  # type: ignore
+                title__icontains=query, business=request.user.business
+            )
+        else:
+            grns = supplier.grns.all()  # type: ignore
+
+        user_partial = BlockObject(
+            template_name=self.template_name,
+            context={"grns": grns, "supplier": supplier},
+            block_name="grn-list-container",
+        )
+
+        return Response(request, htmx_objects=[user_partial])
+
+
+class GRNCreateView(AuthMixin, View):
+    template_name = "pages/inventory/grn-create.html"
+    form = GRNForm
+
+    def get(self, request, supplier_id: int):
+        form = self.form()
+        return render(request, self.template_name, {"form": form})
+
+    def post(self, request, supplier_id: int):
+        form = self.form(request.POST)
+        if form.is_valid():
+            grn = form.save(commit=False)
+            grn.supplier = get_object_or_404(
+                Supplier, id=supplier_id, business=request.user.business
+            )
+            grn.business = request.user.business
+            grn.created_by = request.user
+            grn.save()
+
+            messages.success(request, message="GRN Created Successfully")
+            return redirect(reverse("grn-action", args=[grn.id]))
+        else:
+            messages.error(request, message=form.get_first_error())
+
+        return render(request, self.template_name, {"form": form})
+
+
+class GRNItemCreateView(AuthMixin, View):
+    template_name = "pages/inventory/grn-items-create.html"
+    form = GRNItemsForm
+
+    def get(self, request, grn_id: int):
+        form = self.form()
+        return render(request, self.template_name, {"form": form})
+
+    def post(self, request, grn_id: int):
+        form = self.form(request.POST)
+        if form.is_valid():
+            grn_item = form.save(commit=False)
+            grn_item.grn = get_object_or_404(
+                GRN, id=grn_id, business=request.user.business
+            )
+            grn_item.business = request.user.business
+            grn_item.created_by = request.user
+            grn_item.calculate_cost()
+            grn_item.save()
+
+            messages.success(request, message="GRN Item Created Successfully")
+            return redirect(reverse("grn-action", args=[grn_id]))
         else:
             messages.error(request, message=form.get_first_error())
 
