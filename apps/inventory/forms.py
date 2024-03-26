@@ -38,11 +38,18 @@ class ProductForm(FormFirstErrorTrackingMixin, forms.ModelForm):
         fields = ["title", "category"]
 
 
-class GRNForm(FormFirstErrorTrackingMixin, forms.ModelForm):
+class GRNCreateEditForm(FormFirstErrorTrackingMixin, forms.ModelForm):
 
     class Meta:
         model = GRN
-        fields = ["title", "special_note", "flat_discount", "percentage_discount"]
+        fields = ["title", "special_note"]
+
+
+class GRNDiscountsForm(FormFirstErrorTrackingMixin, forms.ModelForm):
+
+    class Meta:
+        model = GRN
+        fields = ["flat_discount", "percentage_discount"]
 
 
 class GRNItemsForm(FormFirstErrorTrackingMixin, forms.ModelForm):
@@ -52,8 +59,8 @@ class GRNItemsForm(FormFirstErrorTrackingMixin, forms.ModelForm):
         fields = [
             "product",
             "opening_quantity",
-            "item_price",
-            "quantity",
+            "price",
+            "cost",
             "discount_flat_on_total",
             "discount_flat_on_single_item",
             "discount_percentage",

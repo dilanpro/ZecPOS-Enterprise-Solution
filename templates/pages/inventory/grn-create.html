@@ -19,13 +19,9 @@
                 >
                     {% csrf_token %}
 
-                    <h2 class="text-center text-xl uppercase font-bold p-5">Meta Data</h2>
                     {% FormInputGroup field=form.title %}
                     {% FormInputGroup field=form.special_note %}
 
-                    <h2 class="text-center text-xl uppercase font-bold p-5">Discount Options</h2>
-                    {% FormInputGroup field=form.flat_discount %}
-                    {% FormInputGroup field=form.percentage_discount %}
                     <div class="flex flex-col px-3 py-1 w-full">
                         <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
                             Create GRN and Continue

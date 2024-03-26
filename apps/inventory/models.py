@@ -104,6 +104,24 @@ class GRN(models.Model):
         Business, on_delete=models.CASCADE, related_name="grns"
     )
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="grns")
+    finalized_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="finalized_grns",
+        blank=True,
+        null=True,
+    )
+
+    def finalize(self, finalized_by: User):
+        self.is_finalized = True
+        self.finalized_by = finalized_by
+        self.save()
+
+        for _item in self.items.all():  # type: ignore
+            _item.calculate_cost()
+            _item.is_finalized = True
+            _item.finalized_by = finalized_by
+            _item.save()
 
 
 class GRNItem(models.Model):
@@ -113,12 +131,18 @@ class GRNItem(models.Model):
     grn = models.ForeignKey(
         GRN, on_delete=models.CASCADE, related_name="items", blank=True, null=True
     )
-    opening_quantity = models.FloatField(default=0)
-    cost = models.FloatField(default=0)
+    opening_quantity = models.FloatField()
+    actual_cost = models.FloatField(default=0)
+    cost = models.FloatField()
+    price = models.FloatField()
+
+    @property
+    def profit(self) -> float:
+        return self.price - self.actual_cost
 
     @property
     def raw_total_price(self) -> float:
-        total = self.item_price * self.opening_quantity
+        total = self.cost * self.opening_quantity
         return total
 
     @property
@@ -135,11 +159,11 @@ class GRNItem(models.Model):
 
     @property
     def free_items_discount(self) -> float:
-        return self.discount_free_items * self.item_price
+        return self.discount_free_items * self.cost
 
     @property
     def total_price(self) -> float:
-        total = self.item_price * self.opening_quantity
+        total = self.cost * self.opening_quantity
 
         # Flat Discount on Total
         total -= self.discount_flat_on_total
@@ -151,14 +175,11 @@ class GRNItem(models.Model):
         total -= (self.discount_percentage / 100) * total
 
         # Free Items
-        total -= self.discount_free_items * self.item_price
+        total -= self.discount_free_items * self.cost
 
         return total
 
     is_finalized = models.BooleanField(default=False)
-
-    # Price Info
-    item_price = models.FloatField(default=0)
 
     # Discounts
     discount_flat_on_total = models.FloatField(default=0)
@@ -166,14 +187,18 @@ class GRNItem(models.Model):
     discount_percentage = models.FloatField(default=0)
     discount_free_items = models.FloatField(default=0)
 
-    # Stocks
-    quantity = models.FloatField(default=0)
-
     # Meta Info
     business = models.ForeignKey(
         Business, on_delete=models.CASCADE, related_name="items"
     )
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="items")
+    finalized_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="finalized_grn_items",
+        blank=True,
+        null=True,
+    )
 
     def calculate_cost(self):
-        self.cost = self.total_price / self.opening_quantity
+        self.actual_cost = self.total_price / self.opening_quantity

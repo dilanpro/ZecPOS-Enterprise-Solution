@@ -6,8 +6,15 @@ from django.views.generic import View
 
 from core.htmx import BlockObject, Response
 
-from .forms import CategoryForm, GRNForm, GRNItemsForm, ProductForm, SupplierForm
-from .models import GRN, Category, Product, Supplier
+from .forms import (
+    CategoryForm,
+    GRNCreateEditForm,
+    GRNDiscountsForm,
+    GRNItemsForm,
+    ProductForm,
+    SupplierForm,
+)
+from .models import GRN, Category, GRNItem, Product, Supplier
 
 
 class AuthMixin(UserPassesTestMixin):
@@ -355,7 +362,7 @@ class GRNSearchView(AuthMixin, View):
 
 class GRNCreateView(AuthMixin, View):
     template_name = "pages/inventory/grn-create.html"
-    form = GRNForm
+    form = GRNCreateEditForm
 
     def get(self, request, supplier_id: int):
         form = self.form()
@@ -381,28 +388,283 @@ class GRNCreateView(AuthMixin, View):
 
 
 class GRNItemCreateView(AuthMixin, View):
-    template_name = "pages/inventory/grn-items-create.html"
+    template_name = "pages/inventory/grn-action.html"
     form = GRNItemsForm
 
     def get(self, request, grn_id: int):
         form = self.form()
-        return render(request, self.template_name, {"form": form})
+        grn = get_object_or_404(GRN, id=grn_id, business=request.user.business)
+
+        modal_block = BlockObject(
+            template_name=self.template_name,
+            context={"grn_item_form": form, "grn": grn, "grn_item_create_modal": True},
+            block_name="grn-item-create-modal",
+        )
+        return Response(request, htmx_objects=[modal_block])
 
     def post(self, request, grn_id: int):
         form = self.form(request.POST)
+        grn = get_object_or_404(
+            GRN, id=grn_id, business=request.user.business, is_finalized=False
+        )
         if form.is_valid():
             grn_item = form.save(commit=False)
-            grn_item.grn = get_object_or_404(
-                GRN, id=grn_id, business=request.user.business
-            )
+            grn_item.grn = grn
             grn_item.business = request.user.business
             grn_item.created_by = request.user
             grn_item.calculate_cost()
             grn_item.save()
 
-            messages.success(request, message="GRN Item Created Successfully")
-            return redirect(reverse("grn-action", args=[grn_id]))
-        else:
-            messages.error(request, message=form.get_first_error())
+            grn_action_block = BlockObject(
+                template_name=self.template_name,
+                context={"grn": grn},
+                block_name="content",
+            )
+            return Response(
+                request,
+                htmx_objects=[grn_action_block],
+                success_message="GRN Item Created Successfully",
+            )
 
-        return render(request, self.template_name, {"form": form})
+        modal_block = BlockObject(
+            template_name=self.template_name,
+            context={"grn_item_form": form, "grn_item_create_modal": True},
+            block_name="grn-item-create-modal",
+        )
+        return Response(
+            request, htmx_objects=[modal_block], error_message=form.get_first_error()
+        )
+
+
+class GRNItemCloneView(AuthMixin, View):
+    template_name = "pages/inventory/grn-action.html"
+    form = GRNItemsForm
+
+    def get(self, request, grn_id: int, grn_item_id: int):
+        grn = get_object_or_404(
+            GRN, id=grn_id, business=request.user.business, is_finalized=False
+        )
+        grn_item = get_object_or_404(
+            GRNItem, id=grn_item_id, grn=grn, business=request.user.business
+        )
+        form = self.form(instance=grn_item)
+
+        modal_block = BlockObject(
+            template_name=self.template_name,
+            context={"grn_item_form": form, "grn": grn, "grn_item_create_modal": True},
+            block_name="grn-item-create-modal",
+        )
+        return Response(request, htmx_objects=[modal_block])
+
+
+class GRNItemEditView(AuthMixin, View):
+    template_name = "pages/inventory/grn-action.html"
+    form = GRNItemsForm
+
+    def get(self, request, grn_id: int, grn_item_id: int):
+        grn = get_object_or_404(GRN, id=grn_id, business=request.user.business)
+        grn_item = get_object_or_404(
+            GRNItem, id=grn_item_id, grn=grn, business=request.user.business
+        )
+
+        form = self.form(instance=grn_item)
+
+        modal_block = BlockObject(
+            template_name=self.template_name,
+            context={
+                "grn_item_form": form,
+                "grn": grn,
+                "grn_item_create_modal": True,
+                "edit": True,
+                "grn_item": grn_item,
+            },
+            block_name="grn-item-create-modal",
+        )
+        return Response(request, htmx_objects=[modal_block])
+
+    def post(self, request, grn_id: int, grn_item_id: int):
+        grn = get_object_or_404(
+            GRN, id=grn_id, business=request.user.business, is_finalized=False
+        )
+        grn_item = get_object_or_404(
+            GRNItem, id=grn_item_id, grn=grn, business=request.user.business
+        )
+        form = self.form(request.POST, instance=grn_item)
+
+        if form.is_valid():
+            grn_item = form.save(commit=False)
+            grn_item.calculate_cost()
+            grn_item.save()
+
+            grn_action_block = BlockObject(
+                template_name=self.template_name,
+                context={"grn": grn},
+                block_name="content",
+            )
+            return Response(
+                request,
+                htmx_objects=[grn_action_block],
+                success_message="GRN Item Modified Successfully",
+            )
+
+        modal_block = BlockObject(
+            template_name=self.template_name,
+            context={
+                "grn_item_form": form,
+                "grn_item_create_modal": True,
+                "edit": True,
+                "grn_item": grn_item,
+            },
+            block_name="grn-item-create-modal",
+        )
+        return Response(
+            request, htmx_objects=[modal_block], error_message=form.get_first_error()
+        )
+
+
+class GRNItemDeleteView(AuthMixin, View):
+    template_name = "pages/inventory/grn-action.html"
+    form = GRNItemsForm
+
+    def get(self, request, grn_id: int, grn_item_id: int):
+        grn = get_object_or_404(
+            GRN, id=grn_id, business=request.user.business, is_finalized=False
+        )
+        grn_item = get_object_or_404(
+            GRNItem, id=grn_item_id, grn=grn, business=request.user.business
+        )
+        grn_item.delete()
+
+        grn_action_block = BlockObject(
+            template_name=self.template_name,
+            context={"grn": grn},
+            block_name="content",
+        )
+        return Response(
+            request,
+            htmx_objects=[grn_action_block],
+            success_message="GRN Item Deleted Successfully",
+        )
+
+
+class GRNDeleteView(AuthMixin, View):
+
+    def get(self, request, grn_id: int):
+        grn = get_object_or_404(
+            GRN, id=grn_id, business=request.user.business, is_finalized=False
+        )
+        grn.delete()
+
+        return redirect("grns", supplier_id=grn.supplier.id)  # type: ignore
+
+
+class GRNEditView(AuthMixin, View):
+    template_name = "pages/inventory/grn-action.html"
+    form = GRNCreateEditForm
+
+    def get(self, request, grn_id: int):
+        grn = get_object_or_404(GRN, id=grn_id, business=request.user.business)
+        form = self.form(instance=grn)
+
+        modal_block = BlockObject(
+            template_name=self.template_name,
+            context={
+                "grn_edit_form": form,
+                "grn": grn,
+                "grn_edit_modal": True,
+            },
+            block_name="grn-edit-modal",
+        )
+        return Response(request, htmx_objects=[modal_block])
+
+    def post(self, request, grn_id: int):
+        grn = get_object_or_404(
+            GRN, id=grn_id, business=request.user.business, is_finalized=False
+        )
+        form = self.form(request.POST, instance=grn)
+
+        if form.is_valid():
+            grn = form.save()
+
+            grn_action_block = BlockObject(
+                template_name=self.template_name,
+                context={"grn": grn},
+                block_name="content",
+            )
+            return Response(
+                request,
+                htmx_objects=[grn_action_block],
+                success_message="GRN Modified Successfully",
+            )
+
+        modal_block = BlockObject(
+            template_name=self.template_name,
+            context={
+                "grn_edit_form": form,
+                "grn_edit_modal": True,
+            },
+            block_name="grn-edit-modal",
+        )
+        return Response(
+            request, htmx_objects=[modal_block], error_message=form.get_first_error()
+        )
+
+
+class GRNDiscountsView(AuthMixin, View):
+    template_name = "pages/inventory/grn-action.html"
+    form = GRNDiscountsForm
+
+    def get(self, request, grn_id: int):
+        grn = get_object_or_404(GRN, id=grn_id, business=request.user.business)
+        form = self.form(instance=grn)
+
+        modal_block = BlockObject(
+            template_name=self.template_name,
+            context={
+                "grn_discounts_form": form,
+                "grn": grn,
+                "grn_discounts_modal": True,
+            },
+            block_name="grn-discounts-modal",
+        )
+        return Response(request, htmx_objects=[modal_block])
+
+    def post(self, request, grn_id: int):
+        grn = get_object_or_404(
+            GRN, id=grn_id, business=request.user.business, is_finalized=False
+        )
+        form = self.form(request.POST, instance=grn)
+
+        if form.is_valid():
+            grn = form.save()
+
+            grn_action_block = BlockObject(
+                template_name=self.template_name,
+                context={"grn": grn},
+                block_name="content",
+            )
+            return Response(
+                request,
+                htmx_objects=[grn_action_block],
+                success_message="Discounts Added Successfully",
+            )
+
+        modal_block = BlockObject(
+            template_name=self.template_name,
+            context={
+                "grn_discounts_form": form,
+                "grn_discounts_modal": True,
+            },
+            block_name="grn-discounts-modal",
+        )
+        return Response(
+            request, htmx_objects=[modal_block], error_message=form.get_first_error()
+        )
+
+
+class GRNFinalizeView(AuthMixin, View):
+
+    def get(self, request, grn_id: int):
+        grn = get_object_or_404(GRN, id=grn_id, business=request.user.business)
+        grn.finalize(finalized_by=request.user)
+        return redirect("grn-action", grn_id=grn.id)  # type: ignore

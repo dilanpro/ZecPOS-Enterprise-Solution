@@ -9,23 +9,78 @@
         Back
     </div>
 
-    <div class="flex flex-col items-center w-full">
+    <div
+        id="grn-action-main-container"
+        hx-swap-oob="true"
+        class="flex flex-col items-center w-full"
+    >
 
         <!-- GRN Info -->
-        <div class="flex flex-col md:flex-row items-center justify-start w-11/12 max-w-[700px] bg-light my-2 rounded-xl p-5">
-            <div class="flex items-center justify-center w-[150px] h-[150px] bg-primary rounded-full">
-                <img class="w-20 h-20" src="/static/img/grn-light.svg" alt="">
+        <div class="w-11/12 max-w-[700px] bg-light my-2 rounded-xl p-5">
+            <div class="flex flex-col md:flex-row items-center justify-start pb-5">
+                <div class="flex items-center justify-center w-[150px] h-[150px] bg-primary rounded-full">
+                    <img class="w-20 h-20" src="/static/img/grn-light.svg" alt="">
+                </div>
+
+                <div class="text-center md:text-start p-5 w-full">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-bold">{{grn.title}}</h2>
+                        <h2 class="text-lg text-secondary">
+                            <small>for</small>
+                            {{grn.supplier.name}}
+                            <small>on</small>
+                            {{grn.date_added | date}}
+                        </h2>
+                        {% if grn.is_finalized %}
+                            <h2 class="text-lg text-secondary">
+                                <small>finalized by</small>
+                                <small class="font-bold">{{grn.finalized_by.name}}</small>
+                            </h2>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
 
-            <div class="text-center md:text-start p-5 w-full">
-                <h2 class="text-2xl md:text-3xl font-bold">{{grn.title}}</h2>
-                <h2 class="text-lg text-secondary">
-                    <small>for</small>
-                    {{grn.supplier.name}}
-                    <small>on</small>
-                    {{grn.date_added | date}}
-                </h2>
-            </div>
+            {% if not grn.is_finalized %}
+                <div class="flex border-t-2 pt-2">
+                    <div class="w-1/3">
+                        <div
+                            hx-get="{% url 'grn-discounts' grn.id %}"
+                            class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-background-main"
+                        >
+                            <img
+                                class="w-4 h-4"
+                                src="{% static 'img/discount.svg' %}" alt=""
+                            >
+                            <h2>Discounts</h2>
+                        </div>
+                    </div>
+                    <div class="w-1/3">
+                        <div
+                            hx-get="{% url 'grn-edit' grn.id %}"
+                            class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-background-main"
+                        >
+                            <img
+                                class="w-4 h-4"
+                                src="{% static 'img/edit.svg' %}" alt=""
+                            >
+                            <h2>Edit</h2>
+                        </div>
+                    </div>
+                    <div class="w-1/3">
+                        <a
+                            href="{% url 'grn-delete' grn.id %}"
+                            class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-background-main"
+                        >
+                            <img
+                                class="w-4 h-4"
+                                src="{% static 'img/delete.svg' %}" alt=""
+                            >
+                            <h2>Delete</h2>
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
 
         <!-- GRN Items and Info -->
@@ -35,19 +90,61 @@
                     x-data="{showMore: false}"
                     class="flex flex-col w-full p-2"
                 >
-                    <h3 class="flex items-center font-bold text-xl">
+                    <h3
+                        @click="showMore = !showMore"
+                        class="flex items-center font-bold text-xl cursor-pointer"
+                    >
                         <img
                             class="w-4 h-4 cursor-pointer transition-transform duration-300 ease-in-out"
                             :class="{ '-rotate-90': !showMore }"
-                            @click="showMore = !showMore"
                             src="{% static 'img/expand.svg' %}" alt=""
                         >
                         <span class="py-2 ps-2">{{item.product.title}}</span>
                     </h3>
-                    <table>
+                    <table class="border-secondary border-b-2">
+                        {% if not item.is_finalized %}
+                            <tr x-show="showMore" x-cloak>
+                                <td class="w-1/3">
+                                    <div
+                                        hx-get="{% url 'grn-items-clone' grn.id item.id %}"
+                                        class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-background-main"
+                                    >
+                                        <img
+                                            class="w-4 h-4"
+                                            src="{% static 'img/copy.svg' %}" alt=""
+                                        >
+                                        <h2>Clone</h2>
+                                    </div>
+                                </td>
+                                <td class="w-1/3">
+                                    <div
+                                        hx-get="{% url 'grn-items-edit' grn.id item.id %}"
+                                        class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-background-main"
+                                    >
+                                        <img
+                                            class="w-4 h-4"
+                                            src="{% static 'img/edit.svg' %}" alt=""
+                                        >
+                                        <h2>Edit</h2>
+                                    </div>
+                                </td>
+                                <td class="w-1/3">
+                                    <div
+                                        hx-get="{% url 'grn-items-delete' grn.id item.id %}"
+                                        class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-background-main"
+                                    >
+                                        <img
+                                            class="w-4 h-4"
+                                            src="{% static 'img/delete.svg' %}" alt=""
+                                        >
+                                        <h2>Delete</h2>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
                         <tr>
-                            <td class="w-1/3">LKR {{item.item_price|floatformat:2}}</td>
-                            <td class="w-1/3 text-end">X {{item.opening_quantity}}</td>
+                            <td class="w-1/3">Gross Total</td>
+                            <td class="w-1/3 text-end">{{item.cost}} x {{item.opening_quantity}}</td>
                             <td class="w-1/3 text-end">LKR {{item.raw_total_price|floatformat:2}}</td>
                         </tr>
                         <tr x-show="showMore" x-cloak>
@@ -57,7 +154,7 @@
                         </tr>
                         <tr x-show="showMore" x-cloak>
                             <td class="w-1/3"></td>
-                            <td class="w-1/3 text-end">Flat Discount <small>on Items</small></td>
+                            <td class="w-1/3 text-end">Flat Discount <small>on Item</small></td>
                             <td class="w-1/3 text-end">- LKR {{item.flat_discount_on_items|floatformat:2}}</td>
                         </tr>
                         <tr x-show="showMore" x-cloak>
@@ -70,20 +167,33 @@
                             <td class="w-1/3 text-end">Free Items <small>({{item.discount_free_items}})</small></td>
                             <td class="w-1/3 text-end">- LKR {{item.free_items_discount|floatformat:2}}</td>
                         </tr>
-                        <tr class="border-secondary border-b-2">
-                            <td class="w-1/3"></td>
-                            <td class="w-1/3 text-end font-bold">Sub Total</td>
+                        <tr>
+                            <td class="w-1/3 font-bold">Sub Total</td>
+                            <td class="w-1/3 text-end font-bold">{{item.actual_cost|floatformat:2}} x {{item.opening_quantity}}</td>
                             <td class="w-1/3 text-end font-bold">LKR {{item.total_price|floatformat:2}}</td>
+                        </tr>
+                        <tr x-show="showMore" x-cloak>
+                            <td class="w-1/3"></td>
+                            <td class="w-1/3 text-end border-secondary border-t-2">Marked Price <small>on Item</small></td>
+                            <td class="w-1/3 text-end border-secondary border-t-2">LKR {{item.price|floatformat:2}}</td>
+                        </tr>
+                        <tr x-show="showMore" x-cloak>
+                            <td class="w-1/3"></td>
+                            <td class="w-1/3 text-end">Profit Margin <small>on Item</small></td>
+                            <td class="w-1/3 text-end">LKR {{item.profit|floatformat:2}}</td>
                         </tr>
                     </table>
                 </div>
             {% endfor %}
 
-            <!-- Add GRN -->
-            <a href="{% url 'grn-items-create' grn.id %}" class="flex items-center justify-start w-full">
+            <!-- Add GRN Item -->
+            <div
+                hx-get="{% url 'grn-items-create' grn.id %}"
+                class="flex items-center justify-start w-full cursor-pointer"
+            >
                 <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
                 <h2 class="text-xl font-bold uppercase">Add GRN Item</h2>
-            </a>
+            </div>
         </div>
 
         <!-- GRN Items and Info -->
@@ -115,16 +225,188 @@
                     </table>
                 </div>
 
-                <!-- Finalize GRN -->
-                <a
-                    href="{% url 'grn-items-create' grn.id %}"
-                    class="flex items-center justify-center w-full bg-primary rounded-lg text-light mt-3"
-                >
-                    <img class="w-6 h-6 m-3" src="/static/img/confirm-light.svg" alt="">
-                    <h2 class="text-xl font-bold uppercase">Finalize GRN</h2>
-                </a>
+                {% if not grn.is_finalized %}
+                    <!-- Finalize GRN -->
+                    <a
+                        href="{% url 'grn-finalize' grn.id %}"
+                        class="flex items-center justify-center w-full bg-primary rounded-lg text-light mt-3"
+                    >
+                        <img class="w-6 h-6 m-3" src="/static/img/confirm-light.svg" alt="">
+                        <h2 class="text-xl font-bold uppercase">Finalize GRN</h2>
+                    </a>
+                {% endif %}
 
             </div>
+        {% endif %}
+
+        <!-- GRN Discounts Modal -->
+        {% if grn_discounts_modal %}
+        {% block grn-discounts-modal %}
+            <div
+                id="grn-discounts-modal"
+                hx-swap-oob="true"
+                x-data="{
+                    showGRNDiscountsModal: true
+                }"
+            >
+                <div
+                    x-show="showGRNDiscountsModal"
+                    class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
+                >
+                    <div
+                        x-show="showGRNDiscountsModal"
+                        @click.outside="showGRNDiscountsModal = false"
+                        x-transition.duration.300ms
+                        class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px] h-[325px]"\
+                    >
+                        <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
+                            <form
+                                hx-post="{% url 'grn-discounts' grn.id %}"
+                                class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
+                            >
+                                {% csrf_token %}
+
+                                {% FormInputGroup label="Flat discount on total" field=grn_discounts_form.flat_discount %}
+                                {% FormInputGroup label="Percentage discount"  field=grn_discounts_form.percentage_discount %}
+
+                                <div class="flex flex-col px-3 py-1 w-full">
+                                    <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
+                                        Add Discounts
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        {% endblock %}
+    {% else %}
+        <div id="grn-discounts-modal"></div>
+    {% endif %}
+
+        <!-- GRN Edit Modal -->
+        {% if grn_edit_modal %}
+            {% block grn-edit-modal %}
+                <div
+                    id="grn-edit-modal"
+                    hx-swap-oob="true"
+                    x-data="{
+                        showGRNEditModal: true
+                    }"
+                >
+                    <div
+                        x-show="showGRNEditModal"
+                        class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
+                    >
+                        <div
+                            x-show="showGRNEditModal"
+                            @click.outside="showGRNEditModal = false"
+                            x-transition.duration.300ms
+                            class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px] h-[525px]"\
+                        >
+                            <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
+                                <form
+                                    hx-post="{% url 'grn-edit' grn.id %}"
+                                    class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
+                                >
+                                    {% csrf_token %}
+
+                                    {% FormInputGroup field=grn_edit_form.title %}
+                                    {% FormInputGroup field=grn_edit_form.special_note %}
+
+                                    <div class="flex flex-col px-3 py-1 w-full">
+                                        <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
+                                            Edit GRN
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endblock %}
+        {% else %}
+            <div id="grn-edit-modal"></div>
+        {% endif %}
+
+        <!-- GRN Item Create Modal -->
+        {% if grn_item_create_modal %}
+            {% block grn-item-create-modal %}
+                <div
+                    id="grn-item-create-modal"
+                    hx-swap-oob="true"
+                    x-data="{
+                        showGRNItemCreateModal: true
+                    }"
+                >
+                    <div
+                        x-show="showGRNItemCreateModal"
+                        class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
+                    >
+                        <div
+                            x-show="showGRNItemCreateModal"
+                            @click.outside="showGRNItemCreateModal = false"
+                            x-transition.duration.300ms
+                            class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px] h-[550px]"\
+                        >
+                            <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
+                                <form
+                                    x-data="{showDiscounts: false}"
+                                    {% if not edit %}
+                                        hx-post="{% url 'grn-items-create' grn.id %}"
+                                    {% else %}
+                                        hx-post="{% url 'grn-items-edit' grn.id grn_item.id %}"
+                                    {% endif %}
+                                    class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
+                                >
+                                    {% csrf_token %}
+
+                                    <div class="flex w-full justify-center pt-3">
+                                        <div
+                                            class="p-3 rounded-s-lg font-bold border-2 border-background-main cursor-pointer"
+                                            :class="{ 'bg-background-main': !showDiscounts }"
+                                            @click="showDiscounts = false"
+                                        >Meta Info</div>
+                                        <div
+                                            class="p-3 rounded-e-lg font-bold border-2 border-background-main cursor-pointer"
+                                            :class="{ 'bg-background-main': showDiscounts }"
+                                            @click="showDiscounts = true"
+                                        >Discounts</div>
+                                    </div>
+
+                                    <div x-show="!showDiscounts" class="flex-grow w-full">
+                                        {% FormInputGroup field=grn_item_form.product %}
+                                        {% FormInputGroup field=grn_item_form.opening_quantity %}
+                                        {% FormInputGroup field=grn_item_form.price %}
+                                        {% FormInputGroup field=grn_item_form.cost %}
+                                    </div>
+
+                                    <div x-show="showDiscounts" x-cloak class="flex-grow w-full">
+                                        {% FormInputGroup label="Flat discount on total" field=grn_item_form.discount_flat_on_total %}
+                                        {% FormInputGroup label="Flat discount on single item" field=grn_item_form.discount_flat_on_single_item %}
+                                        {% FormInputGroup label="Percentage discount" field=grn_item_form.discount_percentage %}
+                                        {% FormInputGroup label="Free items count" field=grn_item_form.discount_free_items %}
+                                    </div>
+
+                                    <div class="flex flex-col px-3 py-1 w-full">
+                                        <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
+                                            {% if not edit %} Add {% else %} Edit {% endif %} GRN Item
+                                        </button>
+                                    </div>
+                                </form>
+                                <script>
+                                    $('#id_product').select2()
+                                </script>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endblock %}
+        {% else %}
+            <div id="grn-item-create-modal"></div>
         {% endif %}
     </div>
 

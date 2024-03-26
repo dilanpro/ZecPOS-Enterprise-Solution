@@ -72,13 +72,48 @@ urlpatterns = [
         name="grn-action",
     ),
     path(
+        "grn/<int:grn_id>/finalize",
+        views.GRNFinalizeView.as_view(),
+        name="grn-finalize",
+    ),
+    path(
         "grn/create/suppliers/<int:supplier_id>",
         views.GRNCreateView.as_view(),
         name="grn-create",
     ),
     path(
+        "grn/<int:grn_id>/edit",
+        views.GRNEditView.as_view(),
+        name="grn-edit",
+    ),
+    path(
+        "grn/<int:grn_id>/discounts",
+        views.GRNDiscountsView.as_view(),
+        name="grn-discounts",
+    ),
+    path(
+        "grn/<int:grn_id>/delete",
+        views.GRNDeleteView.as_view(),
+        name="grn-delete",
+    ),
+    path(
         "grn-items/create/grn/<int:grn_id>",
         views.GRNItemCreateView.as_view(),
         name="grn-items-create",
+    ),
+    path(
+        "grn-items/create/grn/<int:grn_id>/grn-item/<int:grn_item_id>",
+        views.GRNItemCloneView.as_view(),
+        name="grn-items-clone",
+    ),
+    path(
+        "grn-items/create/grn/<int:grn_id>/grn-item/<int:grn_item_id>/edit",
+        views.GRNItemEditView.as_view(),
+        name="grn-items-edit",
+    ),
+    path(
+        "grn-items/create/grn/<int:grn_id>/grn-item/<int:grn_item_id>/delete",
+        views.GRNItemDeleteView.as_view(),
+        name="grn-items-delete",
     ),
 ]
