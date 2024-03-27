@@ -241,49 +241,49 @@
 
         <!-- GRN Discounts Modal -->
         {% if grn_discounts_modal %}
-        {% block grn-discounts-modal %}
-            <div
-                id="grn-discounts-modal"
-                hx-swap-oob="true"
-                x-data="{
-                    showGRNDiscountsModal: true
-                }"
-            >
+            {% block grn-discounts-modal %}
                 <div
-                    x-show="showGRNDiscountsModal"
-                    class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
+                    id="grn-discounts-modal"
+                    hx-swap-oob="true"
+                    x-data="{
+                        showGRNDiscountsModal: true
+                    }"
                 >
                     <div
                         x-show="showGRNDiscountsModal"
-                        @click.outside="showGRNDiscountsModal = false"
-                        x-transition.duration.300ms
-                        class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px] h-[325px]"\
+                        class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
                     >
-                        <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
-                            <form
-                                hx-post="{% url 'grn-discounts' grn.id %}"
-                                class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
-                            >
-                                {% csrf_token %}
+                        <div
+                            x-show="showGRNDiscountsModal"
+                            @click.outside="showGRNDiscountsModal = false"
+                            x-transition.duration.300ms
+                            class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px] h-[325px]"\
+                        >
+                            <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
+                                <form
+                                    hx-post="{% url 'grn-discounts' grn.id %}"
+                                    class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
+                                >
+                                    {% csrf_token %}
 
-                                {% FormInputGroup label="Flat discount on total" field=grn_discounts_form.flat_discount %}
-                                {% FormInputGroup label="Percentage discount"  field=grn_discounts_form.percentage_discount %}
+                                    {% FormInputGroup label="Flat discount on total" field=grn_discounts_form.flat_discount %}
+                                    {% FormInputGroup label="Percentage discount"  field=grn_discounts_form.percentage_discount %}
 
-                                <div class="flex flex-col px-3 py-1 w-full">
-                                    <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
-                                        Add Discounts
-                                    </button>
-                                </div>
-                            </form>
+                                    <div class="flex flex-col px-3 py-1 w-full">
+                                        <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
+                                            Add Discounts
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
-        {% endblock %}
-    {% else %}
-        <div id="grn-discounts-modal"></div>
-    {% endif %}
+            {% endblock %}
+        {% else %}
+            <div id="grn-discounts-modal"></div>
+        {% endif %}
 
         <!-- GRN Edit Modal -->
         {% if grn_edit_modal %}

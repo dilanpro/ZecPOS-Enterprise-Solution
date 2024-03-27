@@ -89,6 +89,7 @@ def Response(
     htmx_objects: List[HtmxRenderObject | HtmlStringObject] | None = None,
     success_message: str = "",
     error_message: str = "",
+    redirect_uri: str = "",
 ) -> HttpResponse:
     """
     A function to render a list of partials and return them as an HttpResponse.
@@ -119,6 +120,11 @@ def Response(
     elif error_message:
         template_str += f'<script>Toastify({{text: "{error_message}", duration: 5000, gravity: "top", position: "center", backgroundColor: "#fca5a5"}}).showToast();</script>'
     else:
-        template_str += '<div id="#alert"></div>'
+        template_str += '<div id="alert"></div>'
+
+    if redirect_uri:
+        template_str += f'<script>window.location.href = "{redirect_uri}";</script>'
+    else:
+        template_str += '<div id="hx-redirects"></div>'
 
     return retarget(response=HttpResponse(template_str), target="#alert")

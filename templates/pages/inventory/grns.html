@@ -8,39 +8,102 @@
         Back
     </div>
 
-    <div class="flex justify-center w-full p-3">
-        <div class="flex items-center bg-light rounded-lg w-11/12 max-w-[300px]">
-            <input
-                name="query"
-                hx-trigger="input changed delay:300ms, query"
-                hx-post="{% url 'grn-search' supplier.id %}"
-                class="p-3 focus:outline-none focus:border-none w-full"
-                type="text" placeholder="Search..."
+    <div
+        id="grns-container"
+        hx-swap-oob="true"
+    >
+
+        <div class="flex justify-center w-full p-3">
+            <div class="flex items-center bg-light rounded-lg w-11/12 max-w-[300px]">
+                <input
+                    name="query"
+                    hx-trigger="input changed delay:300ms, query"
+                    hx-post="{% url 'grn-search' supplier.id %}"
+                    class="p-3 focus:outline-none focus:border-none w-full"
+                    type="text" placeholder="Search..."
+                >
+                <img class="w-6 m-3" src="/static/img/search.svg" alt="">
+            </div>
+        </div>
+
+        {% block grn-list-container %}
+            <div
+                id="grn-list-container"
+                hx-swap-oob="true"
+                class="flex flex-col items-center w-full"
             >
-            <img class="w-6 m-3" src="/static/img/search.svg" alt="">
-        </div>
+
+                <!-- Existing GRNs -->
+                {% for grn in grns %}
+                    <a href="{% url 'grn-action' grn.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border-2 border-dashed">
+                        <h2 class="text-xl font-bold uppercase">{{grn.title}}</h2>
+                        <div class="flex items-center uppercase text-sm">
+                            <p class="pe-2">{{grn.date_added | date}}</p>
+                            {% if grn.is_finalized %}
+                                <img
+                                    class="w-4 h-4"
+                                    src="{% static 'img/checked.svg' %}" alt=""
+                                >
+                            {% endif %}
+                        </div>
+                    </a>
+                {% endfor %}
+
+                <!-- Add GRN -->
+                <div
+                    hx-get="{% url 'grn-create' supplier.id %}"
+                    class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed cursor-pointer"
+                >
+                    <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
+                    <h2 class="text-xl font-bold uppercase">Add GRN Record</h2>
+                </div>
+            </div>
+        {% endblock %}
+
+        <!-- GRN Create Modal -->
+        {% if grn_create_modal %}
+            {% block grn-create-modal %}
+                <div
+                    id="grn-create-modal"
+                    hx-swap-oob="true"
+                    x-data="{
+                        showGRNCreateModal: true
+                    }"
+                >
+                    <div
+                        x-show="showGRNCreateModal"
+                        class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
+                    >
+                        <div
+                            x-show="showGRNCreateModal"
+                            @click.outside="showGRNCreateModal = false"
+                            x-transition.duration.300ms
+                            class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px] h-[525px]"\
+                        >
+                            <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
+                                <form
+                                    hx-post="{% url 'grn-create' supplier.id %}"
+                                    class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
+                                >
+                                    {% csrf_token %}
+
+                                    {% FormInputGroup field=grn_create_form.title %}
+                                    {% FormInputGroup field=grn_create_form.special_note %}
+
+                                    <div class="flex flex-col px-3 py-1 w-full">
+                                        <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
+                                            Create GRN
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endblock %}
+        {% else %}
+            <div id="grn-create-modal"></div>
+        {% endif %}
     </div>
-
-    {% block grn-list-container %}
-        <div
-            id="grn-list-container"
-            hx-swap-oob="true"
-            class="flex flex-col items-center w-full"
-        >
-
-            <!-- Existing GRNs -->
-            {% for grn in grns %}
-                <a href="{% url 'grn-action' grn.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border-2 border-dashed">
-                    <h2 class="text-xl font-bold uppercase">{{grn.title}}</h2>
-                    <p class="uppercase text-sm">{{grn.date_added | date}}</p>
-                </a>
-            {% endfor %}
-
-            <!-- Add GRN -->
-            <a href="{% url 'grn-create' supplier.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
-                <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
-                <h2 class="text-xl font-bold uppercase">Add GRN Record</h2>
-            </a>
-        </div>
-    {% endblock %}
 {% endblock %}

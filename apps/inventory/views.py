@@ -360,33 +360,6 @@ class GRNSearchView(AuthMixin, View):
         return Response(request, htmx_objects=[user_partial])
 
 
-class GRNCreateView(AuthMixin, View):
-    template_name = "pages/inventory/grn-create.html"
-    form = GRNCreateEditForm
-
-    def get(self, request, supplier_id: int):
-        form = self.form()
-        return render(request, self.template_name, {"form": form})
-
-    def post(self, request, supplier_id: int):
-        form = self.form(request.POST)
-        if form.is_valid():
-            grn = form.save(commit=False)
-            grn.supplier = get_object_or_404(
-                Supplier, id=supplier_id, business=request.user.business
-            )
-            grn.business = request.user.business
-            grn.created_by = request.user
-            grn.save()
-
-            messages.success(request, message="GRN Created Successfully")
-            return redirect(reverse("grn-action", args=[grn.id]))
-        else:
-            messages.error(request, message=form.get_first_error())
-
-        return render(request, self.template_name, {"form": form})
-
-
 class GRNItemCreateView(AuthMixin, View):
     template_name = "pages/inventory/grn-action.html"
     form = GRNItemsForm
@@ -668,3 +641,56 @@ class GRNFinalizeView(AuthMixin, View):
         grn = get_object_or_404(GRN, id=grn_id, business=request.user.business)
         grn.finalize(finalized_by=request.user)
         return redirect("grn-action", grn_id=grn.id)  # type: ignore
+
+
+class GRNCreateView(AuthMixin, View):
+    template_name = "pages/inventory/grns.html"
+    form = GRNCreateEditForm
+
+    def get(self, request, supplier_id: int):
+        form = self.form()
+        supplier = get_object_or_404(
+            Supplier, id=supplier_id, business=request.user.business
+        )
+        modal_block = BlockObject(
+            template_name=self.template_name,
+            context={
+                "grn_create_form": form,
+                "grn_create_modal": True,
+                "supplier": supplier,
+            },
+            block_name="grn-create-modal",
+        )
+        return Response(request, htmx_objects=[modal_block])
+
+    def post(self, request, supplier_id: int):
+        form = self.form(request.POST)
+
+        supplier = get_object_or_404(
+            Supplier, id=supplier_id, business=request.user.business
+        )
+
+        if form.is_valid():
+            grn = form.save(commit=False)
+            grn.supplier = supplier
+            grn.business = request.user.business
+            grn.created_by = request.user
+            grn.save()
+
+            return Response(
+                request,
+                success_message="GRN Created Successfully",
+                redirect_uri=reverse("grn-action", args=[grn.id]),  # type: ignore
+            )
+
+        modal_block = BlockObject(
+            template_name=self.template_name,
+            context={
+                "grn_create_form": form,
+                "grn_create_modal": True,
+            },
+            block_name="grn-create-modal",
+        )
+        return Response(
+            request, htmx_objects=[modal_block], error_message=form.get_first_error()
+        )

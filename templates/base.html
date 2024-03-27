@@ -69,7 +69,10 @@
 		class="flex justify-center bg-background-main h-full"
 	>
 		<!-- Placeholder Alert -->
-		<div id="alert"></div>
+		<div id="alert" hx-swap-oob="true"></div>
+
+		<!-- Placeholder Redirects -->
+		<div id="hx-redirects" hx-swap-oob="true"></div>
 
 		{% include "partials/alerts.html" %}
 		<!-- Main Code Block -->

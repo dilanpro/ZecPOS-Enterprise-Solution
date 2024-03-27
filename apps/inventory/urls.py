@@ -96,6 +96,7 @@ urlpatterns = [
         views.GRNDeleteView.as_view(),
         name="grn-delete",
     ),
+    # GRN Item Endpoints
     path(
         "grn-items/create/grn/<int:grn_id>",
         views.GRNItemCreateView.as_view(),
