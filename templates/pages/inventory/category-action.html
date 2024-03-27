@@ -31,6 +31,12 @@
             <img class="w-6 h-6 m-3" src="/static/img/edit.svg" alt="">
             <h2 class="text-xl font-bold uppercase">Edit Category</h2>
         </a>
+
+        <!-- Check Products -->
+        <a href="{% url 'products' %}?category={{category.id}}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
+            <img class="w-6 h-6 m-3" src="/static/img/product.svg" alt="">
+            <h2 class="text-xl font-bold uppercase">Check Products</h2>
+        </a>
     </div>
 
 {% endblock %}

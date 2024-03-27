@@ -26,10 +26,15 @@ class ProductsDashboardView(AuthMixin, View):
     template_name = "pages/inventory/products.html"
 
     def get(self, request):
+        products = request.user.business.products.all()
+        category_query = request.GET.get("category", False)
+        if category_query:
+            products = products.filter(category=category_query)
+
         return render(
             request,
             self.template_name,
-            context={"products": request.user.business.products.all()},
+            context={"products": products, "category_query": category_query},
         )
 
 
@@ -58,6 +63,10 @@ class ProductSearchView(AuthMixin, View):
             )
         else:
             products = request.user.business.products.all()
+
+        category_query = request.GET.get("category", False)
+        if category_query:
+            products = products.filter(category=category_query)
 
         user_partial = BlockObject(
             template_name=self.template_name,

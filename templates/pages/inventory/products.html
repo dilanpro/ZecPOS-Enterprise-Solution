@@ -6,7 +6,7 @@
             <input
                 name="query"
                 hx-trigger="input changed delay:300ms, query"
-                hx-post="{% url 'products-search' %}"
+                hx-post="{% url 'products-search' %}{% if category_query %}?category={{category_query}}{% endif %}"
                 class="p-3 focus:outline-none focus:border-none w-full"
                 type="text" placeholder="Search..."
             >
