@@ -66,3 +66,7 @@ class GRNItemsForm(FormFirstErrorTrackingMixin, forms.ModelForm):
             "discount_percentage",
             "discount_free_items",
         ]
+
+
+class ChangeMarkPriceForm(FormFirstErrorTrackingMixin, forms.Form):
+    new_price = forms.FloatField()

@@ -32,6 +32,24 @@ class Product(models.Model):
         User, on_delete=models.CASCADE, related_name="products"
     )
 
+    @property
+    def available_stock(self):
+        return sum([_item.quantity for _item in self.items.filter(quantity__gt=0, is_finalized=True)])  # type: ignore
+
+    @property
+    def latest_price(self):
+        items = self.items.filter(quantity__gt=0, is_finalized=True).order_by("-id")  # type: ignore
+        if items.exists():
+            return items.first().price
+        return None
+
+    @property
+    def latest_cost(self):
+        items = self.items.filter(quantity__gt=0, is_finalized=True).order_by("-id")  # type: ignore
+        if items.exists():
+            return items.first().actual_cost
+        return None
+
     def __str__(self) -> str:
         return self.title
 
@@ -132,6 +150,7 @@ class GRNItem(models.Model):
         GRN, on_delete=models.CASCADE, related_name="items", blank=True, null=True
     )
     opening_quantity = models.FloatField()
+    quantity = models.FloatField()
     actual_cost = models.FloatField(default=0)
     cost = models.FloatField()
     price = models.FloatField()

@@ -1,120 +1,152 @@
-from django.urls import path
+from django.urls import include, path
 
-from . import views
+from .views import categories, grn_items, grns, products, suppliers
 
-urlpatterns = [
-    # Product Endpoints
-    path("", views.ProductsDashboardView.as_view(), name="products"),
-    path("search", views.ProductSearchView.as_view(), name="products-search"),
-    path("create", views.ProductCreateView.as_view(), name="products-create"),
+product_urlpatterns = [
+    path("", products.ProductsDashboardView.as_view(), name="products"),
+    path("search", products.ProductSearchView.as_view(), name="products-search"),
+    path("create", products.ProductCreateView.as_view(), name="products-create"),
     path(
         "<int:product_id>/action",
-        views.ProductsActionView.as_view(),
+        products.ProductsActionView.as_view(),
         name="products-action",
     ),
     path(
-        "<int:product_id>/edit", views.ProductEditView.as_view(), name="products-edit"
+        "<int:product_id>/edit",
+        products.ProductEditView.as_view(),
+        name="products-edit",
     ),
-    # Category Endpoints
-    path("categories", views.CategoriesDashboardView.as_view(), name="categories"),
     path(
-        "categories-search",
-        views.CategorySearchView.as_view(),
+        "<int:product_id>/grns",
+        products.ProductsRelatedGRNItemsView.as_view(),
+        name="products-related-grns",
+    ),
+    path(
+        "<int:product_id>/mark-price-change",
+        products.ChangeMarkPriceView.as_view(),
+        name="products-mark-price-change",
+    ),
+]
+
+categories_urlpatterns = [
+    path("", categories.CategoriesDashboardView.as_view(), name="categories"),
+    path(
+        "search",
+        categories.CategorySearchView.as_view(),
         name="categories-search",
     ),
     path(
-        "categories/<int:category_id>/action",
-        views.CategoriesActionView.as_view(),
+        "<int:category_id>/action",
+        categories.CategoriesActionView.as_view(),
         name="categories-action",
     ),
     path(
-        "categories/create",
-        views.CategoryCreateView.as_view(),
+        "create",
+        categories.CategoryCreateView.as_view(),
         name="categories-create",
     ),
     path(
-        "categories/<int:category_id>/edit",
-        views.CategoryEditView.as_view(),
+        "<int:category_id>/edit",
+        categories.CategoryEditView.as_view(),
         name="categories-edit",
     ),
-    # Supplier Endpoints
-    path("suppliers", views.SuppliersDashboardView.as_view(), name="suppliers"),
+]
+
+suppliers_urlpatterns = [
+    path("", suppliers.SuppliersDashboardView.as_view(), name="suppliers"),
     path(
-        "suppliers/<int:supplier_id>/action",
-        views.SuppliersActionView.as_view(),
+        "<int:supplier_id>/action",
+        suppliers.SuppliersActionView.as_view(),
         name="suppliers-action",
     ),
     path(
-        "suppliers-search", views.SupplerSearchView.as_view(), name="suppliers-search"
+        "search",
+        suppliers.SupplerSearchView.as_view(),
+        name="suppliers-search",
     ),
     path(
-        "suppliers/create", views.SupplierCreateView.as_view(), name="suppliers-create"
+        "create",
+        suppliers.SupplierCreateView.as_view(),
+        name="suppliers-create",
     ),
     path(
-        "suppliers/<int:supplier_id>/edit",
-        views.SupplierEditView.as_view(),
+        "<int:supplier_id>/edit",
+        suppliers.SupplierEditView.as_view(),
         name="suppliers-edit",
     ),
-    # GRN Endpoints
+]
+
+grn_urlpatterns = [
     path(
-        "grn/<int:supplier_id>",
-        views.GRNDashboardView.as_view(),
+        "<int:supplier_id>",
+        grns.GRNDashboardView.as_view(),
         name="grns",
     ),
     path(
-        "grn/<int:supplier_id>/search",
-        views.GRNSearchView.as_view(),
+        "<int:supplier_id>/search",
+        grns.GRNSearchView.as_view(),
         name="grn-search",
     ),
     path(
-        "grn/<int:grn_id>/action",
-        views.GRNActionView.as_view(),
+        "<int:grn_id>/action",
+        grns.GRNActionView.as_view(),
         name="grn-action",
     ),
     path(
-        "grn/<int:grn_id>/finalize",
-        views.GRNFinalizeView.as_view(),
+        "<int:grn_id>/finalize",
+        grns.GRNFinalizeView.as_view(),
         name="grn-finalize",
     ),
     path(
-        "grn/create/suppliers/<int:supplier_id>",
-        views.GRNCreateView.as_view(),
+        "suppliers/<int:supplier_id>/create",
+        grns.GRNCreateView.as_view(),
         name="grn-create",
     ),
     path(
-        "grn/<int:grn_id>/edit",
-        views.GRNEditView.as_view(),
+        "<int:grn_id>/edit",
+        grns.GRNEditView.as_view(),
         name="grn-edit",
     ),
     path(
-        "grn/<int:grn_id>/discounts",
-        views.GRNDiscountsView.as_view(),
+        "<int:grn_id>/discounts",
+        grns.GRNDiscountsView.as_view(),
         name="grn-discounts",
     ),
     path(
-        "grn/<int:grn_id>/delete",
-        views.GRNDeleteView.as_view(),
+        "<int:grn_id>/delete",
+        grns.GRNDeleteView.as_view(),
         name="grn-delete",
     ),
-    # GRN Item Endpoints
+]
+
+
+grn_items_urlpatterns = [
     path(
-        "grn-items/create/grn/<int:grn_id>",
-        views.GRNItemCreateView.as_view(),
+        "grn/<int:grn_id>/create",
+        grn_items.GRNItemCreateView.as_view(),
         name="grn-items-create",
     ),
     path(
-        "grn-items/create/grn/<int:grn_id>/grn-item/<int:grn_item_id>",
-        views.GRNItemCloneView.as_view(),
+        "grn/<int:grn_id>/grn-item/<int:grn_item_id>/clone",
+        grn_items.GRNItemCloneView.as_view(),
         name="grn-items-clone",
     ),
     path(
-        "grn-items/create/grn/<int:grn_id>/grn-item/<int:grn_item_id>/edit",
-        views.GRNItemEditView.as_view(),
+        "grn/<int:grn_id>/grn-item/<int:grn_item_id>/edit",
+        grn_items.GRNItemEditView.as_view(),
         name="grn-items-edit",
     ),
     path(
-        "grn-items/create/grn/<int:grn_id>/grn-item/<int:grn_item_id>/delete",
-        views.GRNItemDeleteView.as_view(),
+        "grn/<int:grn_id>/grn-item/<int:grn_item_id>/delete",
+        grn_items.GRNItemDeleteView.as_view(),
         name="grn-items-delete",
     ),
+]
+
+urlpatterns = [
+    path("products/", include(product_urlpatterns)),
+    path("categories/", include(categories_urlpatterns)),
+    path("suppliers/", include(suppliers_urlpatterns)),
+    path("grn/", include(grn_urlpatterns)),
+    path("grn-items/", include(grn_items_urlpatterns)),
 ]

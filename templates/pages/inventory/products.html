@@ -25,7 +25,7 @@
             {% for product in products %}
                 <a href="{% url 'products-action' product.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border-2 border-dashed">
                     <h2 class="text-xl font-bold uppercase">{{product.title}}</h2>
-                    <p class="uppercase text-sm">{{product.category.title}}</p>
+                    <p class="uppercase text-sm">Stock: {{product.available_stock|floatformat:2}} | Category: {{product.category.title}}</p>
                 </a>
             {% endfor %}
 
