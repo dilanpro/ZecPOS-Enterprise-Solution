@@ -35,7 +35,7 @@
 
                 <!-- Existing GRNs -->
                 {% for grn in grns %}
-                    <a href="{% url 'grn-action' grn.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border-2 border-dashed">
+                    <a href="{% url 'grn-action' grn.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border">
                         <h2 class="text-xl font-bold uppercase">{{grn.title}}</h2>
                         <div class="flex items-center uppercase text-sm">
                             <p class="pe-2">{{grn.date_added | date}}</p>
@@ -52,7 +52,7 @@
                 <!-- Add GRN -->
                 <div
                     hx-get="{% url 'grn-create' supplier.id %}"
-                    class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed cursor-pointer"
+                    class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border cursor-pointer"
                 >
                     <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
                     <h2 class="text-xl font-bold uppercase">Add GRN Record</h2>

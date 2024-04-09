@@ -10,7 +10,7 @@ from . import AuthMixin
 
 
 class CategoriesDashboardView(AuthMixin, View):
-    template_name = "pages/inventory/categories.html"
+    template_name = "pages/inventory/categories/index.html"
 
     def get(self, request):
         return render(
@@ -21,7 +21,7 @@ class CategoriesDashboardView(AuthMixin, View):
 
 
 class CategoriesActionView(AuthMixin, View):
-    template_name = "pages/inventory/category-action.html"
+    template_name = "pages/inventory/categories/action.html"
 
     def get(self, request, category_id: int):
         category = get_object_or_404(
@@ -35,7 +35,7 @@ class CategoriesActionView(AuthMixin, View):
 
 
 class CategorySearchView(AuthMixin, View):
-    template_name = "pages/inventory/categories.html"
+    template_name = "pages/inventory/categories/index.html"
 
     def post(self, request):
         query = request.POST["query"]
@@ -56,7 +56,7 @@ class CategorySearchView(AuthMixin, View):
 
 
 class CategoryCreateView(AuthMixin, View):
-    template_name = "pages/inventory/category-create.html"
+    template_name = "pages/inventory/categories/create.html"
     form = CategoryForm
 
     def get(self, request):
@@ -80,7 +80,7 @@ class CategoryCreateView(AuthMixin, View):
 
 
 class CategoryEditView(AuthMixin, View):
-    template_name = "pages/inventory/category-edit.html"
+    template_name = "pages/inventory/categories/edit.html"
     form = CategoryForm
 
     def get(self, request, category_id):

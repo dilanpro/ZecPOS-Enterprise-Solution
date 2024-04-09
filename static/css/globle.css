@@ -17,7 +17,6 @@
 		@apply bg-error text-light border border-error;
 	}
 }
-
 [x-cloak] {
 	display: none !important;
 }
@@ -66,7 +65,7 @@
 
 	.select2-dropdown {
 		/* Dropdown area after the arrow down is clicked */
-		@apply absolute block w-auto bg-light border border-background z-50 float-left;
+		@apply absolute block w-auto bg-light border border-secondary z-50 float-left;
 	}
 
 	.select2-results {
@@ -148,7 +147,7 @@
 
 	.select2-container--default .select2-selection--single {
 		/* Selection bar - Self */
-		@apply p-1 h-10 bg-white border border-background shadow-none rounded-lg;
+		@apply p-1 h-10 bg-white border border-secondary shadow-none rounded-lg;
 	}
 
 	.select2-container--default
@@ -193,7 +192,7 @@
 	.select2-container--default.select2-container--disabled
 		.select2-selection--single {
 		/* Selection by property disabled*/
-		@apply cursor-default bg-background;
+		@apply cursor-default bg-secondary;
 	}
 	.select2-container--default.select2-container--disabled
 		.select2-selection--single
@@ -245,7 +244,7 @@
 	.select2-container--classic
 		.select2-selection--multiple
 		.select2-selection__choice {
-		@apply bg-background shadow rounded float-left cursor-default mt-1 mr-1 px-1;
+		@apply bg-secondary shadow rounded float-left cursor-default mt-1 mr-1 px-1;
 	}
 
 	.select2-container--default .select2-search--inline .select2-search__field {
@@ -265,7 +264,7 @@
 
 	.select2-container--default .select2-results__option[aria-selected="true"] {
 		/* The already selected option row color */
-		@apply bg-background;
+		@apply bg-secondary;
 	}
 	.select2-results__option--selected {
 		@apply hidden;
@@ -330,7 +329,7 @@
 	.select2-container--default
 		.select2-results__option--highlighted[aria-selected] {
 		/* Background color and text color of the options rows when select is open */
-		@apply bg-background text-black;
+		@apply bg-secondary text-black;
 	}
 
 	.select2-container--default .select2-results__group {

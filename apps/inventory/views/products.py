@@ -11,7 +11,7 @@ from . import AuthMixin
 
 
 class ProductsDashboardView(AuthMixin, View):
-    template_name = "pages/inventory/products.html"
+    template_name = "pages/inventory/products/index.html"
 
     def get(self, request):
         products = request.user.business.products.all()
@@ -27,7 +27,7 @@ class ProductsDashboardView(AuthMixin, View):
 
 
 class ProductsActionView(AuthMixin, View):
-    template_name = "pages/inventory/product-action.html"
+    template_name = "pages/inventory/products/action.html"
 
     def get(self, request, product_id: int):
         product = get_object_or_404(
@@ -42,7 +42,7 @@ class ProductsActionView(AuthMixin, View):
 
 
 class ProductSearchView(AuthMixin, View):
-    template_name = "pages/inventory/products.html"
+    template_name = "pages/inventory/products/index.html"
 
     def post(self, request):
         query = request.POST["query"]
@@ -67,7 +67,7 @@ class ProductSearchView(AuthMixin, View):
 
 
 class ProductCreateView(AuthMixin, View):
-    template_name = "pages/inventory/product-create.html"
+    template_name = "pages/inventory/products/create.html"
     form = ProductForm
 
     def get(self, request):
@@ -91,7 +91,7 @@ class ProductCreateView(AuthMixin, View):
 
 
 class ProductEditView(AuthMixin, View):
-    template_name = "pages/inventory/product-edit.html"
+    template_name = "pages/inventory/products/edit.html"
     form = ProductForm
 
     def get(self, request, product_id):
@@ -117,7 +117,7 @@ class ProductEditView(AuthMixin, View):
 
 
 class ProductsRelatedGRNItemsView(AuthMixin, View):
-    template_name = "pages/inventory/product-related-grns.html"
+    template_name = "pages/inventory/products/related-grns.html"
 
     def get(self, request, product_id: int):
         product = get_object_or_404(
@@ -134,7 +134,7 @@ class ProductsRelatedGRNItemsView(AuthMixin, View):
 
 
 class ChangeMarkPriceView(AuthMixin, View):
-    template_name = "pages/inventory/product-mark-price-change.html"
+    template_name = "pages/inventory/products/mark-price-change.html"
     form = ChangeMarkPriceForm
 
     def get(self, request, product_id: int):

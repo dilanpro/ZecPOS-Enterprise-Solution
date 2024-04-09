@@ -10,7 +10,7 @@ from . import AuthMixin
 
 
 class GRNDashboardView(AuthMixin, View):
-    template_name = "pages/inventory/grns.html"
+    template_name = "pages/inventory/grns/index.html"
 
     def get(self, request, supplier_id: int):
         supplier = get_object_or_404(
@@ -24,7 +24,7 @@ class GRNDashboardView(AuthMixin, View):
 
 
 class GRNActionView(AuthMixin, View):
-    template_name = "pages/inventory/grn-action.html"
+    template_name = "pages/inventory/grns/action.html"
 
     def get(self, request, grn_id: int):
         grn = get_object_or_404(GRN, id=grn_id, business=request.user.business)
@@ -36,7 +36,7 @@ class GRNActionView(AuthMixin, View):
 
 
 class GRNSearchView(AuthMixin, View):
-    template_name = "pages/inventory/grns.html"
+    template_name = "pages/inventory/grns/index.html"
 
     def post(self, request, supplier_id: int):
         query = request.POST["query"]
@@ -71,7 +71,7 @@ class GRNDeleteView(AuthMixin, View):
 
 
 class GRNEditView(AuthMixin, View):
-    template_name = "pages/inventory/grn-action.html"
+    template_name = "pages/inventory/grns/action.html"
     form = GRNCreateEditForm
 
     def get(self, request, grn_id: int):
@@ -123,7 +123,7 @@ class GRNEditView(AuthMixin, View):
 
 
 class GRNDiscountsView(AuthMixin, View):
-    template_name = "pages/inventory/grn-action.html"
+    template_name = "pages/inventory/grns/action.html"
     form = GRNDiscountsForm
 
     def get(self, request, grn_id: int):
@@ -183,7 +183,7 @@ class GRNFinalizeView(AuthMixin, View):
 
 
 class GRNCreateView(AuthMixin, View):
-    template_name = "pages/inventory/grns.html"
+    template_name = "pages/inventory/grns/index.html"
     form = GRNCreateEditForm
 
     def get(self, request, supplier_id: int):

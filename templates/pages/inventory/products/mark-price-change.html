@@ -19,15 +19,15 @@
                 <div class="flex justify-center items-center border-b-2 py-3 w-full">
                     <div class="text-center w-1/3">
                         <h2 class="font-bold">Avail. Stock</h2>
-                        <p class="text-secondary">{{product.available_stock|floatformat:2}}</p>
+                        <p class="text-primary">{{product.available_stock|floatformat:2}}</p>
                     </div>
                     <div class="text-center w-1/3">
                         <h2 class="font-bold">Latest Price</h2>
-                        <p class="text-secondary">{% if product.latest_price %}LKR {{product.latest_price|floatformat:2}} {% else %} N/A {% endif %}</p>
+                        <p class="text-primary">{% if product.latest_price %}LKR {{product.latest_price|floatformat:2}} {% else %} N/A {% endif %}</p>
                     </div>
                     <div class="text-center w-1/3">
                         <h2 class="font-bold">Latest Cost</h2>
-                        <p class="text-secondary">{% if product.latest_cost %}LKR {{product.latest_cost|floatformat:2}} {% else %} N/A {% endif %}</p>
+                        <p class="text-primary">{% if product.latest_cost %}LKR {{product.latest_cost|floatformat:2}} {% else %} N/A {% endif %}</p>
                     </div>
                 </div>
 

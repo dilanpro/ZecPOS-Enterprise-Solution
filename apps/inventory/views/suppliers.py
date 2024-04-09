@@ -10,7 +10,7 @@ from . import AuthMixin
 
 
 class SuppliersDashboardView(AuthMixin, View):
-    template_name = "pages/inventory/suppliers.html"
+    template_name = "pages/inventory/suppliers/index.html"
 
     def get(self, request):
         return render(
@@ -21,7 +21,7 @@ class SuppliersDashboardView(AuthMixin, View):
 
 
 class SuppliersActionView(AuthMixin, View):
-    template_name = "pages/inventory/supplier-action.html"
+    template_name = "pages/inventory/suppliers/action.html"
 
     def get(self, request, supplier_id: int):
         supplier = get_object_or_404(
@@ -35,7 +35,7 @@ class SuppliersActionView(AuthMixin, View):
 
 
 class SupplerSearchView(AuthMixin, View):
-    template_name = "pages/inventory/suppliers.html"
+    template_name = "pages/inventory/suppliers/index.html"
 
     def post(self, request):
         query = request.POST["query"]
@@ -56,7 +56,7 @@ class SupplerSearchView(AuthMixin, View):
 
 
 class SupplierCreateView(AuthMixin, View):
-    template_name = "pages/inventory/supplier-create.html"
+    template_name = "pages/inventory/suppliers/create.html"
     form = SupplierForm
 
     def get(self, request):
@@ -80,7 +80,7 @@ class SupplierCreateView(AuthMixin, View):
 
 
 class SupplierEditView(AuthMixin, View):
-    template_name = "pages/inventory/supplier-edit.html"
+    template_name = "pages/inventory/suppliers/edit.html"
     form = SupplierForm
 
     def get(self, request, supplier_id):

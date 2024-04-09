@@ -23,14 +23,14 @@
 
             <!-- Existing Suppliers -->
             {% for supplier in suppliers %}
-                <a href="{% url 'suppliers-action' supplier.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border-2 border-dashed">
+                <a href="{% url 'suppliers-action' supplier.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border">
                     <h2 class="text-xl font-bold uppercase">{{supplier.name}}</h2>
                     <p class="uppercase text-sm">{{supplier.city}}</p>
                 </a>
             {% endfor %}
 
             <!-- Add Supplier -->
-            <a href="{% url 'suppliers-create' %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
+            <a href="{% url 'suppliers-create' %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">
                 <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
                 <h2 class="text-xl font-bold uppercase">Add Supplier</h2>
             </a>

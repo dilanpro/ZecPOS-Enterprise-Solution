@@ -1497,7 +1497,7 @@ video {
   width: auto;
   border-width: 1px;
   --tw-border-opacity: 1;
-  border-color: rgb(255 255 255 / var(--tw-border-opacity));
+  border-color: rgb(226 232 240 / var(--tw-border-opacity));
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
@@ -1594,7 +1594,7 @@ video {
   border-radius: 0.5rem;
   border-width: 1px;
   --tw-border-opacity: 1;
-  border-color: rgb(255 255 255 / var(--tw-border-opacity));
+  border-color: rgb(226 232 240 / var(--tw-border-opacity));
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
   padding: 0.25rem;
@@ -1659,7 +1659,7 @@ video {
   /* Selection by property disabled*/
   cursor: default;
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
 }
 
 .select2-container--default.select2-container--disabled
@@ -1753,7 +1753,7 @@ video {
   cursor: default;
   border-radius: 0.25rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
   padding-left: 0.25rem;
   padding-right: 0.25rem;
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -1792,7 +1792,7 @@ video {
 .select2-container--default .select2-results__option[aria-selected="true"] {
   /* The already selected option row color */
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
 }
 
 .select2-container--default
@@ -1862,7 +1862,7 @@ video {
 		.select2-results__option--highlighted[aria-selected] {
   /* Background color and text color of the options rows when select is open */
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
 }
@@ -2217,10 +2217,6 @@ video {
 
 .h-1 {
   height: 0.25rem;
-}
-
-.h-12 {
-  height: 3rem;
 }
 
 .h-20 {
@@ -3898,6 +3894,11 @@ video {
   color: rgb(251 146 60 / var(--tw-text-opacity));
 }
 
+.text-primary {
+  --tw-text-opacity: 1;
+  color: rgb(30 41 59 / var(--tw-text-opacity));
+}
+
 .text-red-400 {
   --tw-text-opacity: 1;
   color: rgb(248 113 113 / var(--tw-text-opacity));
@@ -3931,11 +3932,6 @@ video {
 .text-zinc-400 {
   --tw-text-opacity: 1;
   color: rgb(161 161 170 / var(--tw-text-opacity));
-}
-
-.text-primary {
-  --tw-text-opacity: 1;
-  color: rgb(30 41 59 / var(--tw-text-opacity));
 }
 
 .underline {

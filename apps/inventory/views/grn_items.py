@@ -9,7 +9,7 @@ from . import AuthMixin
 
 
 class GRNItemCreateView(AuthMixin, View):
-    template_name = "pages/inventory/grn-action.html"
+    template_name = "pages/inventory/grns/action.html"
     form = GRNItemsForm
 
     def get(self, request, grn_id: int):
@@ -31,6 +31,7 @@ class GRNItemCreateView(AuthMixin, View):
         if form.is_valid():
             grn_item = form.save(commit=False)
             grn_item.grn = grn
+            grn_item.quantity = grn_item.opening_quantity
             grn_item.business = request.user.business
             grn_item.created_by = request.user
             grn_item.calculate_cost()
@@ -58,7 +59,7 @@ class GRNItemCreateView(AuthMixin, View):
 
 
 class GRNItemCloneView(AuthMixin, View):
-    template_name = "pages/inventory/grn-action.html"
+    template_name = "pages/inventory/grns/action.html"
     form = GRNItemsForm
 
     def get(self, request, grn_id: int, grn_item_id: int):
@@ -79,7 +80,7 @@ class GRNItemCloneView(AuthMixin, View):
 
 
 class GRNItemEditView(AuthMixin, View):
-    template_name = "pages/inventory/grn-action.html"
+    template_name = "pages/inventory/grns/action.html"
     form = GRNItemsForm
 
     def get(self, request, grn_id: int, grn_item_id: int):
@@ -144,7 +145,7 @@ class GRNItemEditView(AuthMixin, View):
 
 
 class GRNItemDeleteView(AuthMixin, View):
-    template_name = "pages/inventory/grn-action.html"
+    template_name = "pages/inventory/grns/action.html"
     form = GRNItemsForm
 
     def get(self, request, grn_id: int, grn_item_id: int):

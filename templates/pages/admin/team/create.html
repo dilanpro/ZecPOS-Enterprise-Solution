@@ -26,8 +26,6 @@
                         {% FormInputGroup field=form.name %}
                         {% FormInputGroup field=form.role %}
 
-
-
                         <div class="flex flex-col px-3 py-1 w-full">
                             <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
                                 Create User
@@ -43,5 +41,9 @@
             </div>
         {% endif %}
     </div>
+
+    <script>
+        $('#id_role').select2()
+    </script>
 
 {% endblock %}

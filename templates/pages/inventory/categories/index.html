@@ -23,14 +23,14 @@
 
             <!-- Existing Categories -->
             {% for category in categories %}
-                <a href="{% url 'categories-action' category.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border-2 border-dashed">
+                <a href="{% url 'categories-action' category.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border">
                     <h2 class="text-xl font-bold uppercase">{{category.title}}</h2>
                     <p class="uppercase text-sm">{{category.products.all.count}} Products</p>
                 </a>
             {% endfor %}
 
             <!-- Add Category -->
-            <a href="{% url 'categories-create' %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
+            <a href="{% url 'categories-create' %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">
                 <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
                 <h2 class="text-xl font-bold uppercase">Add Category</h2>
             </a>

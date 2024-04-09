@@ -19,7 +19,7 @@
 
             <div class="text-center md:text-start p-5 w-full">
                 <h2 class="text-2xl md:text-3xl font-bold">{{supplier.name}}</h2>
-                <h2 class="text-lg text-secondary">
+                <h2 class="text-lg text-primary">
                     <small>has</small>
                     {{supplier.grns.all.count}} GRNs
                 </h2>
@@ -27,13 +27,13 @@
         </div>
 
         <!-- Edit Supplier -->
-        <a href="{% url 'suppliers-edit' supplier.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
+        <a href="{% url 'suppliers-edit' supplier.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">
             <img class="w-6 h-6 m-3" src="/static/img/edit.svg" alt="">
             <h2 class="text-xl font-bold uppercase">Edit Supplier</h2>
         </a>
 
         <!-- Check GRN -->
-        <a href="{% url 'grns' supplier.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
+        <a href="{% url 'grns' supplier.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">
             <img class="w-6 h-6 m-3" src="/static/img/grn.svg" alt="">
             <h2 class="text-xl font-bold uppercase">Check GRN Record</h2>
         </a>

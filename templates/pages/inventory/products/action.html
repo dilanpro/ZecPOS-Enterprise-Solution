@@ -20,7 +20,7 @@
 
                 <div class="text-center md:text-start p-5 w-full">
                     <h2 class="text-2xl md:text-3xl font-bold">{{product.title}}</h2>
-                    <h2 class="text-lg text-secondary">
+                    <h2 class="text-lg text-primary">
                         <small>Under</small>
                         <a href="{% url 'categories-action' product.category.id %}">{{product.category.title}}</a>
                     </h2>
@@ -30,36 +30,38 @@
             <div class="flex justify-center items-center border-t-2 py-3">
                 <div class="text-center w-1/3">
                     <h2 class="font-bold">Avail. Stock</h2>
-                    <p class="text-secondary">{{product.available_stock|floatformat:2}}</p>
+                    <p class="text-primary">{{product.available_stock|floatformat:2}}</p>
                 </div>
                 <div class="text-center w-1/3">
                     <h2 class="font-bold">Latest Price</h2>
-                    <p class="text-secondary">{% if product.latest_price %}LKR {{product.latest_price|floatformat:2}} {% else %} N/A {% endif %}</p>
+                    <p class="text-primary">{% if product.latest_price %}LKR {{product.latest_price|floatformat:2}} {% else %} N/A {% endif %}</p>
                 </div>
                 <div class="text-center w-1/3">
                     <h2 class="font-bold">Latest Cost</h2>
-                    <p class="text-secondary">{% if product.latest_cost %}LKR {{product.latest_cost|floatformat:2}} {% else %} N/A {% endif %}</p>
+                    <p class="text-primary">{% if product.latest_cost %}LKR {{product.latest_cost|floatformat:2}} {% else %} N/A {% endif %}</p>
                 </div>
             </div>
         </div>
 
         <!-- Edit Product -->
-        <a href="{% url 'products-edit' product.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
+        <a href="{% url 'products-edit' product.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">
             <img class="w-6 h-6 m-3" src="/static/img/edit.svg" alt="">
             <h2 class="text-xl font-bold uppercase">Edit Product</h2>
         </a>
 
         <!-- Check GRN Items -->
-        <a href="{% url 'products-related-grns' product.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
+        <a href="{% url 'products-related-grns' product.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">
             <img class="w-6 h-6 m-3" src="/static/img/grn.svg" alt="">
             <h2 class="text-xl font-bold uppercase">Check Related GRNs</h2>
         </a>
 
         <!-- Changed Mark Price -->
-        <a href="{% url 'products-mark-price-change' product.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
-            <img class="w-6 h-6 m-3" src="/static/img/change-price.svg" alt="">
-            <h2 class="text-xl font-bold uppercase">Change Mark Price</h2>
-        </a>
+        {% if product.available_stock %}
+            <a href="{% url 'products-mark-price-change' product.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">
+                <img class="w-6 h-6 m-3" src="/static/img/change-price.svg" alt="">
+                <h2 class="text-xl font-bold uppercase">Change Mark Price</h2>
+            </a>
+        {% endif %}
 
     </div>
 
