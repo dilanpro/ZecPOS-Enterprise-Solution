@@ -26,10 +26,9 @@ INSTALLED_APPS = [
     "django_extensions",  # Django Extensions
     # Local
     "apps.user",
-    "apps.super_admin",
     "apps.dashboard",
     "apps.pos",
-    "apps.team",
+    "apps.admin",
     "apps.inventory",
 ]
 

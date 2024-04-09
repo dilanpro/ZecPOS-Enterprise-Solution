@@ -19,12 +19,12 @@
 
             <div class="text-center md:text-start p-5 w-full">
                 <h2 class="text-2xl md:text-3xl font-bold">{{selected_user.name}}</h2>
-                <h2 class="text-lg text-secondary">@{{selected_user.username}} | {{selected_user.get_role_display}}</h2>
+                <h2 class="text-lg text-primary">@{{selected_user.username}} | {{selected_user.get_role_display}}</h2>
             </div>
         </div>
 
         <!-- Edit Users -->
-        <a href="{% url 'team-users-edit' selected_user.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
+        <a href="{% url 'team-users-edit' selected_user.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">
             <img class="w-6 h-6 m-3" src="/static/img/edit.svg" alt="">
             <h2 class="text-xl font-bold uppercase">Edit user</h2>
         </a>

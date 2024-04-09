@@ -16,7 +16,7 @@ class AuthMixin(UserPassesTestMixin):
 
 
 class TeamIndexView(AuthMixin, View):
-    template_name = "pages/team/users.html"
+    template_name = "pages/admin/team/index.html"
 
     def get(self, request):
         return render(
@@ -30,7 +30,7 @@ class TeamIndexView(AuthMixin, View):
 
 
 class UserActionView(AuthMixin, View):
-    template_name = "pages/team/user-action.html"
+    template_name = "pages/admin/team/action.html"
 
     def get(self, request, user_id: int):
         user = get_object_or_404(User, id=user_id, business=request.user.business)
@@ -40,7 +40,7 @@ class UserActionView(AuthMixin, View):
 
 
 class UserCreateView(AuthMixin, View):
-    template_name: str = "pages/team/user-create.html"
+    template_name: str = "pages/admin/team/create.html"
     form = UserCreateForm
 
     def _has_available_licenses(self, business: Business):
@@ -82,7 +82,7 @@ class UserCreateView(AuthMixin, View):
 
 
 class UserEditView(AuthMixin, View):
-    template_name: str = "pages/team/user-edit.html"
+    template_name: str = "pages/admin/team/edit.html"
     form = UserCreateForm
 
     def get(self, request, user_id):
@@ -129,7 +129,7 @@ class UserDeleteView(AuthMixin, View):
 
 
 class UserSearchView(AuthMixin, View):
-    template_name = "pages/team/users.html"
+    template_name = "pages/admin/team/index.html"
 
     def post(self, request):
         query = request.POST["query"]

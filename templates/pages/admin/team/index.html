@@ -25,7 +25,7 @@
 
             <!-- Existing Users -->
             {% for user in users %}
-                <a href="{% url 'team-users-action' user.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border-2 border-dashed">
+                <a href="{% url 'team-users-action' user.id %}" class="flex flex-col items-start justify-center w-11/12 max-w-[700px] h-[75px] bg-light my-2 p-3 rounded-xl border">
                     <h2 class="text-xl font-bold uppercase">{{user.name}}</h2>
                     <p class="uppercase text-sm">{{user.get_role_display}} | {{user.username}}</p>
                 </a>
@@ -33,7 +33,7 @@
 
             <!-- Add Users -->
             {% if business.available_license_count %}
-                <a href="{% url 'team-users-create' %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border-2 border-dashed">
+                <a href="{% url 'team-users-create' %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">
                     <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
                     <h2 class="text-xl font-bold uppercase">Add user</h2>
                 </a>

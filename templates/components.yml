@@ -1,3 +1,13 @@
 components:
   # Form Input Group
   FormInputGroup: "components/form-input-group.html"
+
+  # UI / Popover
+  Popover: "components/ui/popover/Popover.html"
+  PopoverTrigger: "components/ui/popover/PopoverTrigger.html"
+  PopoverContent: "components/ui/popover/PopoverContent.html"
+
+  # UI / Sheet
+  Sheet: "components/ui/sheet/Sheet.html"
+  SheetTrigger: "components/ui/sheet/SheetTrigger.html"
+  SheetContent: "components/ui/sheet/SheetContent.html"

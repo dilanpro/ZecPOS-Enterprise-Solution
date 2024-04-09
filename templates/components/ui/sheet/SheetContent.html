@@ -1,0 +1,19 @@
+{% load static %}
+
+<div x-show="showSheet" @click.outside="showSheet = false">
+    <div class="fixed top-0 left-0 z-50 bg-light w-[350px] h-screen shadow-xl">
+
+        <div
+            class="flex items-center justify-end p-2 border-b"
+        >
+            <div
+                @click="showSheet = false"
+                class="flex items-center cursor-pointer justify-center rounded-full w-8 h-8 hover:bg-background-main"
+            >
+                <img class="w-4" src="{% static 'img/close-black.svg' %}" alt="">
+            </div>
+        </div>
+
+        {{ children }}
+    </div>
+</div>

@@ -1,8 +1,8 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
-urlpatterns = [
+team_urlpatterns = [
     path("", views.TeamIndexView.as_view(), name="team"),
     path("users/create", views.UserCreateView.as_view(), name="team-users-create"),
     path(
@@ -21,4 +21,9 @@ urlpatterns = [
         views.UserDeleteView.as_view(),
         name="team-user-delete",
     ),
+]
+
+
+urlpatterns = [
+    path("team/", include(team_urlpatterns)),
 ]

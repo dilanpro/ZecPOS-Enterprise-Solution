@@ -7,16 +7,13 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				"background-main": colors.zinc[200],
-				"background-dark": colors.zinc[800],
-				"background-dark-h": colors.zinc[900],
-				primary: colors.blue[500],
-				"primary-h": colors.blue[700],
-				secondary: colors.slate[500],
-				"secondary-h": colors.slate[700],
-				light: colors.white,
-				dark: colors.black,
+				background: colors.white,
+				primary: colors.slate[800],
+				secondary: colors.slate[200],
 				error: colors.red[400],
+				success: colors.green[400],
+				light: colors.white,
+				dark: colors.slate[950],
 			},
 			fontFamily: {
 				"logo-style": ["Luckiest Guy", "cursive"],
