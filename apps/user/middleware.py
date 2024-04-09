@@ -14,4 +14,6 @@ class Middleware:
         if not request.user.is_authenticated and not request.path == reverse("login"):
             return redirect(reverse("login"))
 
+        #
+
         return self.get_response(request)
