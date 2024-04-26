@@ -143,11 +143,9 @@ class GRN(models.Model):
 
 
 class GRNItem(models.Model):
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, null=True, related_name="items"
-    )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="items")
     grn = models.ForeignKey(
-        GRN, on_delete=models.CASCADE, related_name="items", blank=True, null=True
+        GRN, on_delete=models.CASCADE, related_name="items", blank=True
     )
     opening_quantity = models.FloatField()
     quantity = models.FloatField()
@@ -228,11 +226,19 @@ class SR(models.Model):
     special_note = models.TextField(null=True, blank=True)
     date_added = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
-    is_finalized = models.BooleanField(default=False)
+    quantity = models.FloatField()
+    item_cost = models.FloatField()
+
+    @property
+    def total_cost(self) -> float:
+        return self.quantity * self.item_cost
 
     # Meta Info
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="srs")
     business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name="srs")
+    grn_item = models.ForeignKey(
+        GRNItem, on_delete=models.CASCADE, related_name="srs", blank=True, null=True
+    )
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="srs")
     finalized_by = models.ForeignKey(
         User,

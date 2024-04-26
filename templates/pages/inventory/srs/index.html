@@ -48,15 +48,6 @@
                         </div>
                     </a>
                 {% endfor %}
-
-                <!-- Add SR -->
-                <a
-                    href="{% url 'sr-create' supplier.id %}"
-                    class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border cursor-pointer"
-                >
-                    <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
-                    <h2 class="text-xl font-bold uppercase">Add SR Record</h2>
-                </a>
             </div>
         {% endblock %}
     </div>

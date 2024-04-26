@@ -6,7 +6,7 @@ from django.views.generic import View
 from core.htmx import BlockObject, Response
 
 from ..forms import SRCreateEditForm
-from ..models import SR, Supplier
+from ..models import SR, GRNItem, Supplier
 from . import AuthMixin
 
 
@@ -28,24 +28,32 @@ class SRCreateView(AuthMixin, View):
     template_name = "pages/inventory/srs/create.html"
     form = SRCreateEditForm
 
-    def get(self, request, supplier_id: int):
+    def get(self, request, item_id: int):
         form = self.form()
 
-        return render(request, template_name=self.template_name, context={"form": form})
+        item = get_object_or_404(GRNItem, id=item_id, business=request.user.business)
 
-    def post(self, request, supplier_id: int):
+        return render(
+            request,
+            template_name=self.template_name,
+            context={"form": form, "item": item},
+        )
+
+    def post(self, request, item_id: int):
         form = self.form(request.POST)
 
-        supplier = get_object_or_404(
-            Supplier, id=supplier_id, business=request.user.business
-        )
+        item = get_object_or_404(GRNItem, id=item_id, business=request.user.business)
 
         if form.is_valid():
             sr = form.save(commit=False)
-            sr.supplier = supplier
+            sr.supplier = item.grn.supplier  # type: ignore
             sr.business = request.user.business
             sr.created_by = request.user
+            sr.grn_item = item
             sr.save()
+
+            item.quantity -= sr.quantity
+            item.save()
 
             messages.success(request, "SR Created Successfully")
             return redirect("sr-action", sr_id=sr.id)
@@ -58,21 +66,14 @@ class SRActionView(AuthMixin, View):
 
     def get(self, request, sr_id: int):
         sr = get_object_or_404(SR, id=sr_id, business=request.user.business)
+
+        print(sr.grn_item)
+
         return render(
             request,
             self.template_name,
             context={"sr": sr},
         )
-
-
-class SRDeleteView(AuthMixin, View):
-    def get(self, request, sr_id: int):
-        sr = get_object_or_404(
-            SR, id=sr_id, business=request.user.business, is_finalized=False
-        )
-        sr.delete()
-
-        return redirect("srs", supplier_id=sr.supplier.id)  # type: ignore
 
 
 class SRSearchView(AuthMixin, View):

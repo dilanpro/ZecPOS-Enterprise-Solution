@@ -169,3 +169,25 @@ class ChangeMarkPriceView(AuthMixin, View):
         return render(
             request, self.template_name, context={"form": form, "product": product}
         )
+
+
+class ProductsRelatedSRsView(AuthMixin, View):
+    template_name = "pages/inventory/products/related-srs.html"
+
+    def get(self, request, product_id: int):
+        product = get_object_or_404(
+            Product, id=product_id, business=request.user.business
+        )
+
+        grn_items = product.items.all()  # type: ignore
+
+        related_srs = []
+        for _grn_item in grn_items:
+            if _grn_item.srs.exists():
+                related_srs.extend(_grn_item.srs.all())
+
+        return render(
+            request,
+            self.template_name,
+            context={"srs": related_srs},
+        )

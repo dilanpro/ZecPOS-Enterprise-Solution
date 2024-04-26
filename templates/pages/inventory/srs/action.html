@@ -9,11 +9,7 @@
         Back
     </div>
 
-    <div
-        id="grn-action-main-container"
-        hx-swap-oob="true"
-        class="flex flex-col items-center w-full"
-    >
+    <div class="flex flex-col items-center w-full">
 
         <!-- SR Info -->
         <div class="w-11/12 max-w-[700px] my-2 rounded-xl p-5">
@@ -31,299 +27,39 @@
                             <small>on</small>
                             {{sr.date_added | date}}
                         </h2>
-                        {% if sr.is_finalized %}
-                            <h2 class="text-lg text-primary">
-                                <small>finalized by</small>
-                                <small class="font-bold">{{sr.finalized_by.name}}</small>
-                            </h2>
-                        {% endif %}
+                        <h2 class="text-lg text-primary">
+                            <small>finalized by</small>
+                            <small class="font-bold">{{sr.created_by.name}}</small>
+                        </h2>
                     </div>
                 </div>
             </div>
 
-            {% if not sr.is_finalized %}
-                <div class="flex border-t-2 pt-2">
-                    <div class="w-1/3"></div>
-                    <div class="w-1/3"></div>
-                    <div class="w-1/3">
-                        <div
-                            x-data="{
-                                showDeleteSRModel: false
-                            }"
-                        >
-                            <div
-                                @click="showDeleteSRModel = true"
-                                class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-secondary"
-                            >
-                                <img
-                                    class="w-4 h-4"
-                                    src="{% static 'img/delete.svg' %}" alt=""
-                                >
-                                <h2>Delete</h2>
-                            </div>
-                            <div
-                                x-show="showDeleteSRModel"
-                                class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
-                            >
-                                <div
-                                    x-show="showDeleteSRModel"
-                                    @click.outside="showDeleteSRModel = false"
-                                    x-transition.duration.300ms
-                                    class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px]"\
-                                >
-                                    <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
-                                        <div>
-                                            <h2 class="text-xl font-bold text-center">Confirmation Required</h2>
-
-                                            <p class="pt-5 pb-2">Are you sure you want to delete this SR? Deletion will be permanent and cannot be undone.</p>
-                                        </div>
-                                        <a
-                                            href="{% url 'sr-delete' sr.id %}"
-                                            class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full"
-                                        >
-                                            Delete SR
-                                        </a>
-                                        <div @click="showDeleteSRModel = false" class="text-error font-bold cursor-pointer">No, I Don't!</div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-
-        <!-- GRN Items and Info -->
-        <div class="flex flex-col items-center justify-start w-11/12 max-w-[700px] my-2 rounded-xl p-5">
-            {% for item in grn.items.all %}
-                <div
-                    x-data="{showMore: false}"
-                    class="flex flex-col w-full p-2"
-                >
-                    <h3
-                        @click="showMore = !showMore"
-                        class="flex items-center font-bold text-xl cursor-pointer"
-                    >
-                        <img
-                            class="w-4 h-4 cursor-pointer transition-transform duration-300 ease-in-out"
-                            :class="{ '-rotate-90': !showMore }"
-                            src="{% static 'img/expand.svg' %}" alt=""
-                        >
-                        <span class="py-2 ps-2">{{item.product.title}}</span>
-                    </h3>
-                    <table class="border-secondary border-b-2">
-                        {% if not item.is_finalized %}
-                            <tr x-show="showMore" x-cloak>
-                                <td class="w-1/3">
-                                    <div
-                                        hx-get="{% url 'sr-items-clone' grn.id item.id %}"
-                                        class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-secondary"
-                                    >
-                                        <img
-                                            class="w-4 h-4"
-                                            src="{% static 'img/copy.svg' %}" alt=""
-                                        >
-                                        <h2>Clone</h2>
-                                    </div>
-                                </td>
-                                <td class="w-1/3">
-                                    <div
-                                        hx-get="{% url 'sr-items-edit' grn.id item.id %}"
-                                        class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-secondary"
-                                    >
-                                        <img
-                                            class="w-4 h-4"
-                                            src="{% static 'img/edit.svg' %}" alt=""
-                                        >
-                                        <h2>Edit</h2>
-                                    </div>
-                                </td>
-                                <td class="w-1/3">
-                                    <div
-                                        hx-get="{% url 'sr-items-delete' grn.id item.id %}"
-                                        class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-secondary"
-                                    >
-                                        <img
-                                            class="w-4 h-4"
-                                            src="{% static 'img/delete.svg' %}" alt=""
-                                        >
-                                        <h2>Delete</h2>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endif %}
-                        <tr>
-                            <td class="w-1/3">Gross Total</td>
-                            <td class="w-1/3 text-end">{{item.cost}} x {{item.opening_quantity}}</td>
-                            <td class="w-1/3 text-end">LKR {{item.raw_total_price|floatformat:2}}</td>
-                        </tr>
-                        <tr x-show="showMore" x-cloak>
-                            <td class="w-1/3"></td>
-                            <td class="w-1/3 text-end">Flat Discount <small>on Total</small></td>
-                            <td class="w-1/3 text-end">- LKR {{item.flat_discount_on_total|floatformat:2}}</td>
-                        </tr>
-                        <tr x-show="showMore" x-cloak>
-                            <td class="w-1/3"></td>
-                            <td class="w-1/3 text-end">Flat Discount <small>on Item</small></td>
-                            <td class="w-1/3 text-end">- LKR {{item.flat_discount_on_items|floatformat:2}}</td>
-                        </tr>
-                        <tr x-show="showMore" x-cloak>
-                            <td class="w-1/3"></td>
-                            <td class="w-1/3 text-end">Percentage Discount <small>({{item.discount_percentage}}%)</small></td>
-                            <td class="w-1/3 text-end">- LKR {{item.percentage_discount|floatformat:2}}</td>
-                        </tr>
-                        <tr x-show="showMore" x-cloak>
-                            <td class="w-1/3"></td>
-                            <td class="w-1/3 text-end">Free Items <small>({{item.discount_free_items}})</small></td>
-                            <td class="w-1/3 text-end">- LKR {{item.free_items_discount|floatformat:2}}</td>
-                        </tr>
-                        <tr>
-                            <td class="w-1/3 font-bold">Sub Total</td>
-                            <td class="w-1/3 text-end font-bold">{{item.actual_cost|floatformat:2}} x {{item.opening_quantity}}</td>
-                            <td class="w-1/3 text-end font-bold">LKR {{item.total_price|floatformat:2}}</td>
-                        </tr>
-                        <tr x-show="showMore" x-cloak>
-                            <td class="w-1/3"></td>
-                            <td class="w-1/3 text-end border-secondary border-t-2">Marked Price <small>on Item</small></td>
-                            <td class="w-1/3 text-end border-secondary border-t-2">LKR {{item.price|floatformat:2}}</td>
-                        </tr>
-                        <tr x-show="showMore" x-cloak>
-                            <td class="w-1/3"></td>
-                            <td class="w-1/3 text-end">Profit Margin <small>on Item</small></td>
-                            <td class="w-1/3 text-end">LKR {{item.profit|floatformat:2}}</td>
-                        </tr>
-                    </table>
-                </div>
-            {% endfor %}
-
-            {% if not grn.is_finalized %}
-                <!-- Add GRN Item -->
-                <div
-                    hx-get=""
-                    class="flex items-center justify-start w-full cursor-pointer"
-                >
-                    <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
-                    <h2 class="text-xl font-bold uppercase">Add SR Item</h2>
-                </div>
-            {% endif %}
-        </div>
-
-        <!-- GRN Items and Info -->
-        {% if grn.items.all.count %}
-            <div class="flex flex-col items-center justify-start w-11/12 max-w-[700px] my-2 rounded-xl p-5">
-                <div
-                    class="flex flex-col w-full p-2"
-                >
-                    <h3 class="flex items-center font-bold text-xl text-center py-2">
-                        GRN Summary
-                    </h3>
-                    <table>
-                        <tr>
-                            <td class="w-1/2 text-end">Total</td>
-                            <td class="w-1/2 text-end">LKR {{grn.raw_total_price|floatformat:2}}</td>
-                        </tr>
-                        <tr>
-                            <td class="w-1/2 text-end">Flat Discount <small>on Total</small></td>
-                            <td class="w-1/2 text-end">- LKR {{grn.discount_flat|floatformat:2}}</td>
-                        </tr>
-                        <tr>
-                            <td class="w-1/2 text-end">Percentage Discount <small>({{grn.percentage_discount}}%)</small></td>
-                            <td class="w-1/2 text-end">- LKR {{grn.discount_percentage|floatformat:2}}</td>
-                        </tr>
-                        <tr class="mt-3">
-                            <td class="w-1/2 text-end font-bold text-xl">Net Total</td>
-                            <td class="w-1/2 text-end font-bold text-xl">LKR {{grn.total_price|floatformat:2}}</td>
-                        </tr>
-                    </table>
-                </div>
-
-                {% if not grn.is_finalized %}
-                    <!-- Finalize GRN -->
-                    <a
-                        href=""
-                        class="flex items-center justify-center w-full bg-primary rounded-lg text-light mt-3"
-                    >
-                        <img class="w-6 h-6 m-3" src="/static/img/confirm-light.svg" alt="">
-                        <h2 class="text-xl font-bold uppercase">Finalize SR</h2>
-                    </a>
-                {% endif %}
-
+            <div class="w-full py-2">
+                <table class="w-full">
+                    <tr>
+                        <td class="w-1/5 font-bold">Product</td>
+                        <td class="w-4/5 text-primary">
+                            <a href="{% url 'products-action' sr.grn_item.product.id %}">{{ sr.grn_item.product.title}}</a>
+                        </td>
+                    </tr>
+                </table>
             </div>
-        {% endif %}
 
-        <!-- GRN Item Create Modal -->
-        {% if sr_item_create_modal %}
-            {% block sr-item-create-modal %}
-                <div
-                    id="sr-item-create-modal"
-                    hx-swap-oob="true"
-                    x-data="{
-                        showGRNItemCreateModal: true
-                    }"
-                >
-                    <div
-                        x-show="showGRNItemCreateModal"
-                        class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
-                    >
-                        <div
-                            x-show="showGRNItemCreateModal"
-                            @click.outside="showGRNItemCreateModal = false"
-                            x-transition.duration.300ms
-                            class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px] h-[550px]"\
-                        >
-                            <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
-                                <form
-                                    x-data="{showDiscounts: false}"
-                                    class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
-                                >
-                                    {% csrf_token %}
-
-                                    <div class="flex w-full justify-center pt-3">
-                                        <div
-                                            class="p-3 rounded-s-lg font-bold border-2 border-background-main cursor-pointer"
-                                            :class="{ 'bg-secondary': !showDiscounts }"
-                                            @click="showDiscounts = false"
-                                        >Meta Info</div>
-                                        <div
-                                            class="p-3 rounded-e-lg font-bold border-2 border-background-main cursor-pointer"
-                                            :class="{ 'bg-secondary': showDiscounts }"
-                                            @click="showDiscounts = true"
-                                        >Discounts</div>
-                                    </div>
-
-                                    <div x-show="!showDiscounts" class="flex-grow w-full">
-                                        {% FormInputGroup field=grn_item_form.product %}
-                                        {% FormInputGroup field=grn_item_form.opening_quantity %}
-                                        {% FormInputGroup field=grn_item_form.price %}
-                                        {% FormInputGroup field=grn_item_form.cost %}
-                                    </div>
-
-                                    <div x-show="showDiscounts" x-cloak class="flex-grow w-full">
-                                        {% FormInputGroup label="Flat discount on total" field=grn_item_form.discount_flat_on_total %}
-                                        {% FormInputGroup label="Flat discount on single item" field=grn_item_form.discount_flat_on_single_item %}
-                                        {% FormInputGroup label="Percentage discount" field=grn_item_form.discount_percentage %}
-                                        {% FormInputGroup label="Free items count" field=grn_item_form.discount_free_items %}
-                                    </div>
-
-                                    <div class="flex flex-col px-3 py-1 w-full">
-                                        <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
-                                            {% if not edit %} Add {% else %} Edit {% endif %} GRN Item
-                                        </button>
-                                    </div>
-                                </form>
-                                <script>
-                                    $('#id_product').select2()
-                                </script>
-                            </div>
-                        </div>
-
-                    </div>
+            <div class="flex justify-center items-center border-t-2 py-3 w-full">
+                <div class="text-center w-1/3">
+                    <h2 class="font-bold">Returned Quantity</h2>
+                    <p class="text-primary">{{sr.quantity|floatformat:2}}</p>
                 </div>
-            {% endblock %}
-        {% else %}
-            <div id="sr-item-create-modal"></div>
-        {% endif %}
+                <div class="text-center w-1/3">
+                    <h2 class="font-bold">Item Cost</h2>
+                    <p class="text-primary">LKR {{sr.item_cost|floatformat:2}}</p>
+                </div>
+                <div class="text-center w-1/3">
+                    <h2 class="font-bold">Total Cost</h2>
+                    <p class="text-primary">LKR {{sr.total_cost|floatformat:2}}</p>
+                </div>
+            </div>
+        </div>
     </div>
-
 {% endblock %}

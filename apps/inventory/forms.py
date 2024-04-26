@@ -1,7 +1,7 @@
 from django import forms
 
 from core.forms import FormFirstErrorTrackingMixin
-
+from django.core.validators import MinValueValidator
 from .models import GRN, Category, GRNItem, Product, Supplier, SR
 
 
@@ -74,6 +74,9 @@ class ChangeMarkPriceForm(FormFirstErrorTrackingMixin, forms.Form):
 
 class SRCreateEditForm(FormFirstErrorTrackingMixin, forms.ModelForm):
 
+    quantity = forms.FloatField(validators=[MinValueValidator(0)])
+    quantity = forms.FloatField(validators=[MinValueValidator(0)])
+
     class Meta:
         model = SR
-        fields = ["title", "special_note"]
+        fields = ["title", "special_note", "quantity", "item_cost"]

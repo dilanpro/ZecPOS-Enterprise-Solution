@@ -55,6 +55,12 @@
             <h2 class="text-xl font-bold uppercase">Check Related GRNs</h2>
         </a>
 
+        <!-- Check SR Items -->
+        <a href="{% url 'products-related-srs' product.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">
+            <img class="w-6 h-6 m-3" src="/static/img/sr.svg" alt="">
+            <h2 class="text-xl font-bold uppercase">Check Related SRs</h2>
+        </a>
+
         <!-- Changed Mark Price -->
         {% if product.available_stock %}
             <a href="{% url 'products-mark-price-change' product.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">

@@ -24,9 +24,77 @@
                     {% FormInputGroup field=form.special_note %}
 
                     <div class="flex flex-col px-3 py-1 w-full">
-                        <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
+                        <label class="mb-2 text-primary">
+                            Quantity ({{ item.quantity }} in stock)
+                        </label>
+                        <input
+                            type="number"
+                            name="quantity"
+                            step="any"
+                            min="0.001"
+                            max="{{ item.quantity }}"
+                            value="{{ item.quantity }}"
+                            class="w-full border-2 rounded-lg p-2 focus:outline-none bg-light border-error"
+                            placeholder="Quantity"
+                            required
+                            id="id_quantity"
+                        >
+                    </div>
+
+                    <div class="flex flex-col px-3 py-1 w-full">
+                        <label class="mb-2 text-primary">
+                            Item price (LKR {{ item.actual_cost }} was cost)
+                        </label>
+                        <input
+                            type="number"
+                            name="item_cost"
+                            step="any"
+                            min="0"
+                            value="{{ item.actual_cost }}"
+                            class="w-full border-2 rounded-lg p-2 focus:outline-none bg-light border-error"
+                            placeholder="Item cost"
+                            required
+                            id="id_item_cost"
+                        >
+                    </div>
+
+                    <div
+                        x-data="{
+                            showCreateSRModel: false
+                        }"
+                        class="flex flex-col px-3 py-1 w-full">
+                        <div
+                            @click="showCreateSRModel = true"
+                            class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full cursor-pointer">
                             Create SR
-                        </button>
+                        </div>
+
+                        <div
+                            x-show="showCreateSRModel"
+                            class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
+                        >
+                            <div
+                                x-show="showCreateSRModel"
+                                @click.outside="showCreateSRModel = false"
+                                x-transition.duration.300ms
+                                class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px]"\
+                            >
+                                <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
+                                    <div>
+                                        <h2 class="text-xl font-bold text-center">Confirmation Required</h2>
+
+                                        <p class="pt-5 pb-2">Are you sure you want to return this item? Supplier return will be permanent and cannot be undone.</p>
+                                    </div>
+                                    <button
+                                        class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full"
+                                    >
+                                        Create SR
+                                    </button>
+                                    <div @click="showCreateSRModel = false" class="text-error font-bold cursor-pointer">No, I Don't!</div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </form>
             </div>
