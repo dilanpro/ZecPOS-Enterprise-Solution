@@ -67,8 +67,6 @@ class SRActionView(AuthMixin, View):
     def get(self, request, sr_id: int):
         sr = get_object_or_404(SR, id=sr_id, business=request.user.business)
 
-        print(sr.grn_item)
-
         return render(
             request,
             self.template_name,

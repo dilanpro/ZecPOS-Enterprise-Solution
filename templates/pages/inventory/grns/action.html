@@ -174,21 +174,23 @@
                                     </div>
                                 </td>
                             </tr>
-                        {% elif item.quantity %}
-                            <tr x-show="showMore" x-cloak>
-                                <td class="w-1/3"></td>
-                                <td class="w-1/3"></td>
+                        {% else %}
+                            <tr x-show="showMore" x-cloak class="border-b">
+                                <td class="w-1/3">Available Stock</td>
+                                <td class="w-1/3 text-end">{{ item.quantity }}</td>
                                 <td class="w-1/3">
-                                    <a
-                                        href="{% url 'sr-create' item.id %}"
-                                        class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-secondary"
-                                    >
-                                        <img
-                                            class="w-4 h-4"
-                                            src="{% static 'img/sr.svg' %}" alt=""
+                                    {% if item.quantity %}
+                                        <a
+                                            href="{% url 'sr-create' item.id %}"
+                                            class="flex items-center justify-end space-x-1 rounded-lg p-2 cursor-pointe"
                                         >
-                                        <h2>Return</h2>
-                                    </a>
+                                            <img
+                                                class="w-4 h-4"
+                                                src="{% static 'img/sr.svg' %}" alt=""
+                                            >
+                                            <h2>Return</h2>
+                                        </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endif %}
