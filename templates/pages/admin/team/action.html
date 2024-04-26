@@ -28,6 +28,55 @@
             <img class="w-6 h-6 m-3" src="/static/img/edit.svg" alt="">
             <h2 class="text-xl font-bold uppercase">Edit user</h2>
         </a>
+
+        <!-- Edit Password Reset -->
+        <a href="{% url 'team-users-password-reset' selected_user.id %}" class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border">
+            <img class="w-6 h-6 m-3" src="/static/img/password-reset.svg" alt="">
+            <h2 class="text-xl font-bold uppercase">Password Reset</h2>
+        </a>
+
+
+        {% if user != selected_user %}
+            <div
+                x-data="{
+                    showDeleteUserModel: false
+                }"
+                class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border"
+            >
+                <div class="flex items-center cursor-pointer" @click="showDeleteUserModel = true">
+                    <img class="w-6 h-6 m-3" src="/static/img/delete.svg" alt="">
+                    <h2 class="text-xl font-bold uppercase">Delete User</h2>
+                </div>
+
+                <div
+                    x-show="showDeleteUserModel"
+                    class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
+                >
+                    <div
+                        x-show="showDeleteUserModel"
+                        @click.outside="showDeleteUserModel = false"
+                        x-transition.duration.300ms
+                        class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px]"\
+                    >
+                        <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
+                            <div>
+                                <h2 class="text-xl font-bold text-center">Confirmation Required</h2>
+
+                                <p class="pt-5 pb-2">Are you sure you want to delete this user? Deletion will be permanent and cannot be undone.</p>
+                            </div>
+                            <a
+                                href="{% url 'team-user-delete' selected_user.id %}"
+                                class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full"
+                            >
+                                Delete User
+                            </a>
+                            <div @click="showDeleteUserModel = false" class="text-error font-bold cursor-pointer">No, I Don't!</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}

@@ -17,6 +17,11 @@ team_urlpatterns = [
         name="team-users-edit",
     ),
     path(
+        "users/<int:user_id>/password-reset",
+        views.UserPasswordResetView.as_view(),
+        name="team-users-password-reset",
+    ),
+    path(
         "users/<int:user_id>/delete",
         views.UserDeleteView.as_view(),
         name="team-user-delete",

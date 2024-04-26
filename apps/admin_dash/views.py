@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
 
-from apps.user.forms import UserCreateForm
+from apps.user.forms import UserCreateForm, UserEditForm, UserPasswordResetForm
 from apps.user.models import Business, User
 from core.htmx import BlockObject, Response
 
@@ -67,7 +67,7 @@ class UserCreateView(AuthMixin, View):
 
         form = self.form(request.POST)
         if form.is_valid():
-            user: User = form.save()
+            user: User = form.save(commit=False)
             user.password = make_password(user.password)
             user.business = business
             user.save()
@@ -78,12 +78,21 @@ class UserCreateView(AuthMixin, View):
             error = form.get_first_error()
             messages.error(request, error)
 
-        return render(request, template_name=self.template_name, context={"form": form})
+        return render(
+            request,
+            template_name=self.template_name,
+            context={
+                "form": form,
+                "licenses": self._has_available_licenses(
+                    business=request.user.business
+                ),
+            },
+        )
 
 
 class UserEditView(AuthMixin, View):
     template_name: str = "pages/admin/team/edit.html"
-    form = UserCreateForm
+    form = UserEditForm
 
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id, business_id=request.user.business.id)
@@ -99,9 +108,6 @@ class UserEditView(AuthMixin, View):
         form = self.form(request.POST, instance=user)
         if form.is_valid():
             user: User = form.save()
-            user.password = make_password(user.password)
-            user.business = request.user.business
-            user.save()
             messages.success(request, "User edited successfully")
             return redirect(reverse("team"))
 
@@ -147,3 +153,37 @@ class UserSearchView(AuthMixin, View):
         )
 
         return Response(request, htmx_objects=[user_partial])
+
+
+class UserPasswordResetView(AuthMixin, View):
+    template_name: str = "pages/admin/team/password-reset.html"
+    form = UserPasswordResetForm
+
+    def get(self, request, user_id):
+        user = get_object_or_404(User, id=user_id, business_id=request.user.business.id)
+        form = self.form(instance=user)
+        return render(
+            request,
+            template_name=self.template_name,
+            context={"form": form, "selected_user": user},
+        )
+
+    def post(self, request, user_id):
+        user = get_object_or_404(User, id=user_id, business_id=request.user.business.id)
+        form = self.form(request.POST, instance=user)
+        if form.is_valid():
+            user: User = form.save()
+            user.password = make_password(user.password)
+            user.save()
+            messages.success(request, "Password reset successfully")
+            return redirect(reverse("team"))
+
+        else:
+            error = form.get_first_error()
+            messages.error(request, error)
+
+        return render(
+            request,
+            template_name=self.template_name,
+            context={"form": form, "selected_user": user},
+        )

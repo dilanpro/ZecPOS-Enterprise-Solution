@@ -50,13 +50,13 @@
                 {% endfor %}
 
                 <!-- Add GRN -->
-                <div
-                    hx-get="{% url 'grn-create' supplier.id %}"
+                <a
+                    href="{% url 'grn-create' supplier.id %}"
                     class="flex items-center justify-start w-11/12 max-w-[700px] h-[75px] bg-light my-2 rounded-xl border cursor-pointer"
                 >
                     <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
                     <h2 class="text-xl font-bold uppercase">Add GRN Record</h2>
-                </div>
+                </a>
             </div>
         {% endblock %}
 

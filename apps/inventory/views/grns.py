@@ -1,5 +1,6 @@
+import django.contrib
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 from django.views.generic import View
 
 from core.htmx import BlockObject, Response
@@ -183,24 +184,13 @@ class GRNFinalizeView(AuthMixin, View):
 
 
 class GRNCreateView(AuthMixin, View):
-    template_name = "pages/inventory/grns/index.html"
+    template_name = "pages/inventory/grns/create.html"
     form = GRNCreateEditForm
 
     def get(self, request, supplier_id: int):
         form = self.form()
-        supplier = get_object_or_404(
-            Supplier, id=supplier_id, business=request.user.business
-        )
-        modal_block = BlockObject(
-            template_name=self.template_name,
-            context={
-                "grn_create_form": form,
-                "grn_create_modal": True,
-                "supplier": supplier,
-            },
-            block_name="grn-create-modal",
-        )
-        return Response(request, htmx_objects=[modal_block])
+
+        return render(request, template_name=self.template_name, context={"form": form})
 
     def post(self, request, supplier_id: int):
         form = self.form(request.POST)
@@ -216,20 +206,7 @@ class GRNCreateView(AuthMixin, View):
             grn.created_by = request.user
             grn.save()
 
-            return Response(
-                request,
-                success_message="GRN Created Successfully",
-                redirect_uri=reverse("grn-action", args=[grn.id]),  # type: ignore
-            )
+            messages.success(request, "GRN Created Successfully")
+            return redirect("grn-action", grn_id=grn.id)
 
-        modal_block = BlockObject(
-            template_name=self.template_name,
-            context={
-                "grn_create_form": form,
-                "grn_create_modal": True,
-            },
-            block_name="grn-create-modal",
-        )
-        return Response(
-            request, htmx_objects=[modal_block], error_message=form.get_first_error()
-        )
+        return render(request, template_name=self.template_name, context={"form": form})
