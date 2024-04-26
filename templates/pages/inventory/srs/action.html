@@ -15,66 +15,44 @@
         class="flex flex-col items-center w-full"
     >
 
-        <!-- GRN Info -->
+        <!-- SR Info -->
         <div class="w-11/12 max-w-[700px] my-2 rounded-xl p-5">
             <div class="flex flex-col md:flex-row items-center justify-start pb-5">
                 <div class="flex items-center justify-center w-[150px] h-[150px] bg-primary rounded-full">
-                    <img class="w-20 h-20" src="/static/img/grn-light.svg" alt="">
+                    <img class="w-20 h-20" src="/static/img/sr-light.svg" alt="">
                 </div>
 
                 <div class="text-center md:text-start p-5 w-full">
                     <div>
-                        <h2 class="text-2xl md:text-3xl font-bold">{{grn.title}}</h2>
+                        <h2 class="text-2xl md:text-3xl font-bold">{{sr.title}}</h2>
                         <h2 class="text-lg text-primary">
                             <small>for</small>
-                            {{grn.supplier.name}}
+                            {{sr.supplier.name}}
                             <small>on</small>
-                            {{grn.date_added | date}}
+                            {{sr.date_added | date}}
                         </h2>
-                        {% if grn.is_finalized %}
+                        {% if sr.is_finalized %}
                             <h2 class="text-lg text-primary">
                                 <small>finalized by</small>
-                                <small class="font-bold">{{grn.finalized_by.name}}</small>
+                                <small class="font-bold">{{sr.finalized_by.name}}</small>
                             </h2>
                         {% endif %}
                     </div>
                 </div>
             </div>
 
-            {% if not grn.is_finalized %}
+            {% if not sr.is_finalized %}
                 <div class="flex border-t-2 pt-2">
-                    <div class="w-1/3">
-                        <div
-                            hx-get="{% url 'grn-discounts' grn.id %}"
-                            class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-secondary"
-                        >
-                            <img
-                                class="w-4 h-4"
-                                src="{% static 'img/discount.svg' %}" alt=""
-                            >
-                            <h2>Discounts</h2>
-                        </div>
-                    </div>
-                    <div class="w-1/3">
-                        <div
-                            hx-get="{% url 'grn-edit' grn.id %}"
-                            class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-secondary"
-                        >
-                            <img
-                                class="w-4 h-4"
-                                src="{% static 'img/edit.svg' %}" alt=""
-                            >
-                            <h2>Edit</h2>
-                        </div>
-                    </div>
+                    <div class="w-1/3"></div>
+                    <div class="w-1/3"></div>
                     <div class="w-1/3">
                         <div
                             x-data="{
-                                showDeleteGRNModel: false
+                                showDeleteSRModel: false
                             }"
                         >
                             <div
-                                @click="showDeleteGRNModel = true"
+                                @click="showDeleteSRModel = true"
                                 class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-secondary"
                             >
                                 <img
@@ -84,12 +62,12 @@
                                 <h2>Delete</h2>
                             </div>
                             <div
-                                x-show="showDeleteGRNModel"
+                                x-show="showDeleteSRModel"
                                 class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
                             >
                                 <div
-                                    x-show="showDeleteGRNModel"
-                                    @click.outside="showDeleteGRNModel = false"
+                                    x-show="showDeleteSRModel"
+                                    @click.outside="showDeleteSRModel = false"
                                     x-transition.duration.300ms
                                     class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px]"\
                                 >
@@ -97,15 +75,15 @@
                                         <div>
                                             <h2 class="text-xl font-bold text-center">Confirmation Required</h2>
 
-                                            <p class="pt-5 pb-2">Are you sure you want to delete this GRN? Deletion will be permanent and cannot be undone.</p>
+                                            <p class="pt-5 pb-2">Are you sure you want to delete this SR? Deletion will be permanent and cannot be undone.</p>
                                         </div>
                                         <a
-                                            href="{% url 'grn-delete' grn.id %}"
+                                            href="{% url 'sr-delete' sr.id %}"
                                             class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full"
                                         >
-                                            Delete GRN
+                                            Delete SR
                                         </a>
-                                        <div @click="showDeleteGRNModel = false" class="text-error font-bold cursor-pointer">No, I Don't!</div>
+                                        <div @click="showDeleteSRModel = false" class="text-error font-bold cursor-pointer">No, I Don't!</div>
                                     </div>
                                 </div>
 
@@ -139,7 +117,7 @@
                             <tr x-show="showMore" x-cloak>
                                 <td class="w-1/3">
                                     <div
-                                        hx-get="{% url 'grn-items-clone' grn.id item.id %}"
+                                        hx-get="{% url 'sr-items-clone' grn.id item.id %}"
                                         class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-secondary"
                                     >
                                         <img
@@ -151,7 +129,7 @@
                                 </td>
                                 <td class="w-1/3">
                                     <div
-                                        hx-get="{% url 'grn-items-edit' grn.id item.id %}"
+                                        hx-get="{% url 'sr-items-edit' grn.id item.id %}"
                                         class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-secondary"
                                     >
                                         <img
@@ -163,7 +141,7 @@
                                 </td>
                                 <td class="w-1/3">
                                     <div
-                                        hx-get="{% url 'grn-items-delete' grn.id item.id %}"
+                                        hx-get="{% url 'sr-items-delete' grn.id item.id %}"
                                         class="flex items-center justify-center space-x-1 rounded-lg p-2 cursor-pointer hover:bg-secondary"
                                     >
                                         <img
@@ -222,11 +200,11 @@
             {% if not grn.is_finalized %}
                 <!-- Add GRN Item -->
                 <div
-                    hx-get="{% url 'grn-items-create' grn.id %}"
+                    hx-get=""
                     class="flex items-center justify-start w-full cursor-pointer"
                 >
                     <img class="w-6 h-6 m-3" src="/static/img/plus.svg" alt="">
-                    <h2 class="text-xl font-bold uppercase">Add GRN Item</h2>
+                    <h2 class="text-xl font-bold uppercase">Add SR Item</h2>
                 </div>
             {% endif %}
         </div>
@@ -263,114 +241,22 @@
                 {% if not grn.is_finalized %}
                     <!-- Finalize GRN -->
                     <a
-                        href="{% url 'grn-finalize' grn.id %}"
+                        href=""
                         class="flex items-center justify-center w-full bg-primary rounded-lg text-light mt-3"
                     >
                         <img class="w-6 h-6 m-3" src="/static/img/confirm-light.svg" alt="">
-                        <h2 class="text-xl font-bold uppercase">Finalize GRN</h2>
+                        <h2 class="text-xl font-bold uppercase">Finalize SR</h2>
                     </a>
                 {% endif %}
 
             </div>
         {% endif %}
 
-        <!-- GRN Discounts Modal -->
-        {% if grn_discounts_modal %}
-            {% block grn-discounts-modal %}
-                <div
-                    id="grn-discounts-modal"
-                    hx-swap-oob="true"
-                    x-data="{
-                        showGRNDiscountsModal: true
-                    }"
-                >
-                    <div
-                        x-show="showGRNDiscountsModal"
-                        class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
-                    >
-                        <div
-                            x-show="showGRNDiscountsModal"
-                            @click.outside="showGRNDiscountsModal = false"
-                            x-transition.duration.300ms
-                            class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px] h-[325px]"\
-                        >
-                            <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
-                                <form
-                                    hx-post="{% url 'grn-discounts' grn.id %}"
-                                    class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
-                                >
-                                    {% csrf_token %}
-
-                                    {% FormInputGroup label="Flat discount on total" field=grn_discounts_form.flat_discount %}
-                                    {% FormInputGroup label="Percentage discount"  field=grn_discounts_form.percentage_discount %}
-
-                                    <div class="flex flex-col px-3 py-1 w-full">
-                                        <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
-                                            Add Discounts
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            {% endblock %}
-        {% else %}
-            <div id="grn-discounts-modal"></div>
-        {% endif %}
-
-        <!-- GRN Edit Modal -->
-        {% if grn_edit_modal %}
-            {% block grn-edit-modal %}
-                <div
-                    id="grn-edit-modal"
-                    hx-swap-oob="true"
-                    x-data="{
-                        showGRNEditModal: true
-                    }"
-                >
-                    <div
-                        x-show="showGRNEditModal"
-                        class="modal fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
-                    >
-                        <div
-                            x-show="showGRNEditModal"
-                            @click.outside="showGRNEditModal = false"
-                            x-transition.duration.300ms
-                            class="flex flex-col justify-center w-11/12 bg-white my-3 rounded-lg max-w-[500px] h-[525px]"\
-                        >
-                            <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
-                                <form
-                                    hx-post="{% url 'grn-edit' grn.id %}"
-                                    class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
-                                >
-                                    {% csrf_token %}
-
-                                    {% FormInputGroup field=grn_edit_form.title %}
-                                    {% FormInputGroup field=grn_edit_form.special_note %}
-
-                                    <div class="flex flex-col px-3 py-1 w-full">
-                                        <button class="px-3 py-2 rounded-lg text-center text-white bg-primary w-full">
-                                            Edit GRN
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            {% endblock %}
-        {% else %}
-            <div id="grn-edit-modal"></div>
-        {% endif %}
-
         <!-- GRN Item Create Modal -->
-        {% if grn_item_create_modal %}
-            {% block grn-item-create-modal %}
+        {% if sr_item_create_modal %}
+            {% block sr-item-create-modal %}
                 <div
-                    id="grn-item-create-modal"
+                    id="sr-item-create-modal"
                     hx-swap-oob="true"
                     x-data="{
                         showGRNItemCreateModal: true
@@ -389,11 +275,6 @@
                             <div class="flex flex-col gap-3 items-center justify-center w-full p-3">
                                 <form
                                     x-data="{showDiscounts: false}"
-                                    {% if not edit %}
-                                        hx-post="{% url 'grn-items-create' grn.id %}"
-                                    {% else %}
-                                        hx-post="{% url 'grn-items-edit' grn.id grn_item.id %}"
-                                    {% endif %}
                                     class="flex flex-col gap-3 items-center justify-center h-full w-full pb-5"
                                 >
                                     {% csrf_token %}
@@ -441,7 +322,7 @@
                 </div>
             {% endblock %}
         {% else %}
-            <div id="grn-item-create-modal"></div>
+            <div id="sr-item-create-modal"></div>
         {% endif %}
     </div>
 

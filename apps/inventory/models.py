@@ -221,3 +221,23 @@ class GRNItem(models.Model):
 
     def calculate_cost(self):
         self.actual_cost = self.total_price / self.opening_quantity
+
+
+class SR(models.Model):
+    title = models.CharField(max_length=100)
+    special_note = models.TextField(null=True, blank=True)
+    date_added = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    is_finalized = models.BooleanField(default=False)
+
+    # Meta Info
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="srs")
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name="srs")
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="srs")
+    finalized_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="finalized_srs",
+        blank=True,
+        null=True,
+    )

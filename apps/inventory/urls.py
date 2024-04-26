@@ -1,6 +1,7 @@
 from django.urls import include, path
 
-from .views import categories, grn_items, grns, products, suppliers
+from apps.inventory.views.srs import SRActionView
+from .views import categories, grn_items, grns, products, srs, suppliers
 
 product_urlpatterns = [
     path("", products.ProductsDashboardView.as_view(), name="products"),
@@ -143,10 +144,39 @@ grn_items_urlpatterns = [
     ),
 ]
 
+sr_urlpatterns = [
+    path(
+        "<int:supplier_id>",
+        srs.SRDashboardView.as_view(),
+        name="srs",
+    ),
+    path(
+        "suppliers/<int:supplier_id>/create",
+        srs.SRCreateView.as_view(),
+        name="sr-create",
+    ),
+    path(
+        "<int:sr_id>/action",
+        srs.SRActionView.as_view(),
+        name="sr-action",
+    ),
+    path(
+        "<int:sr_id>/delete",
+        srs.SRDeleteView.as_view(),
+        name="sr-delete",
+    ),
+    path(
+        "<int:supplier_id>/search",
+        srs.SRSearchView.as_view(),
+        name="sr-search",
+    ),
+]
+
 urlpatterns = [
     path("products/", include(product_urlpatterns)),
     path("categories/", include(categories_urlpatterns)),
     path("suppliers/", include(suppliers_urlpatterns)),
     path("grn/", include(grn_urlpatterns)),
     path("grn-items/", include(grn_items_urlpatterns)),
+    path("sr/", include(sr_urlpatterns)),
 ]

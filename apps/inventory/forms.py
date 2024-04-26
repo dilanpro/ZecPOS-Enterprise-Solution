@@ -2,7 +2,7 @@ from django import forms
 
 from core.forms import FormFirstErrorTrackingMixin
 
-from .models import GRN, Category, GRNItem, Product, Supplier
+from .models import GRN, Category, GRNItem, Product, Supplier, SR
 
 
 class SupplierForm(FormFirstErrorTrackingMixin, forms.ModelForm):
@@ -70,3 +70,10 @@ class GRNItemsForm(FormFirstErrorTrackingMixin, forms.ModelForm):
 
 class ChangeMarkPriceForm(FormFirstErrorTrackingMixin, forms.Form):
     new_price = forms.FloatField()
+
+
+class SRCreateEditForm(FormFirstErrorTrackingMixin, forms.ModelForm):
+
+    class Meta:
+        model = SR
+        fields = ["title", "special_note"]
