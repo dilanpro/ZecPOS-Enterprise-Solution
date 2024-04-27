@@ -185,7 +185,8 @@ class ProductsRelatedSRsView(AuthMixin, View):
         for _grn_item in grn_items:
             if _grn_item.srs.exists():
                 related_srs.extend(_grn_item.srs.all())
-        related_srs = sorted(related_srs, key=lambda x: int(x.id), reverse=True)
+        related_srs = sorted(related_srs, key=lambda x: x.id, reverse=True)
+
         return render(
             request,
             self.template_name,
